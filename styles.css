@@ -509,54 +509,52 @@ body {
     height: 250px;
 }
 
-.pallavi-storytelling {
+.main-logo-container {
     position: absolute;
     top: 20%;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 3rem;
     z-index: 2;
     animation: storytelling 3s ease-in-out infinite;
 }
 
-.listening-children {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
+.about-logo {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    border-radius: 50%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-.child-listen-1, .child-listen-2, .child-listen-3, .child-listen-4 {
-    font-size: 2rem;
-    animation: listen-attentively 2s ease-in-out infinite;
-}
-
-.child-listen-1 { animation-delay: 0s; }
-.child-listen-2 { animation-delay: 0.5s; }
-.child-listen-3 { animation-delay: 1s; }
-.child-listen-4 { animation-delay: 1.5s; }
-
-.story-elements {
+.logo-elements {
     position: absolute;
     width: 100%;
     height: 100%;
 }
 
-.floating-book {
+.floating-logo-1, .floating-logo-2 {
     position: absolute;
+}
+
+.floating-logo-1 {
     top: 30%;
     right: 10%;
-    font-size: 2rem;
     animation: float 4s ease-in-out infinite;
 }
 
-.floating-star {
-    position: absolute;
+.floating-logo-2 {
     top: 10%;
     left: 20%;
-    font-size: 1.5rem;
     animation: twinkle 2s ease-in-out infinite;
+}
+
+.small-logo {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    border-radius: 50%;
+    opacity: 0.7;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 @keyframes storytelling {
