@@ -427,49 +427,48 @@ body {
 .about-vision h3,
 .about-objective h3 {
     font-family: 'Nunito', sans-serif;
-    font-size: 1.8rem;
+    font-size: 2.2rem;
     color: #2E7D32;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+    position: relative;
+}
+
+.about-objective h3::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #4CAF50, #2E7D32);
+    border-radius: 2px;
 }
 
 .about-intro p,
-.about-vision p,
-.about-objective p {
+.about-vision p {
     font-size: 1.1rem;
     line-height: 1.8;
     color: #555;
     margin-bottom: 1.5rem;
 }
 
+.about-objective p {
+    font-size: 1.3rem;
+    line-height: 1.8;
+    color: #2E7D32;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+    font-style: italic;
+}
+
 .about-vision {
     margin: 2rem 0;
 }
 
-.about-objective {
-    margin-top: 2rem;
-}
-
-.objective-list {
-    list-style: none;
-    padding-left: 0;
-}
-
-.objective-list li {
-    position: relative;
-    padding-left: 2rem;
-    margin-bottom: 0.8rem;
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: #555;
-}
-
-.objective-list li::before {
-    content: '✨';
-    position: absolute;
-    left: 0;
-    top: 0;
-    font-size: 1rem;
-}
 
 .about-highlights {
     display: flex;
@@ -505,57 +504,30 @@ body {
 
 .storytelling-scene {
     position: relative;
-    width: 300px;
-    height: 250px;
+    width: 350px;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .main-logo-container {
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 2;
-    animation: storytelling 3s ease-in-out infinite;
-}
-
-.about-logo {
-    width: 80px;
-    height: 80px;
-    object-fit: contain;
-    border-radius: 50%;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-.logo-elements {
-    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     height: 100%;
 }
 
-.floating-logo-1, .floating-logo-2 {
-    position: absolute;
-}
-
-.floating-logo-1 {
-    top: 30%;
-    right: 10%;
-    animation: float 4s ease-in-out infinite;
-}
-
-.floating-logo-2 {
-    top: 10%;
-    left: 20%;
-    animation: twinkle 2s ease-in-out infinite;
-}
-
-.small-logo {
-    width: 40px;
-    height: 40px;
+.about-logo {
+    width: 250px;
+    height: 250px;
     object-fit: contain;
-    border-radius: 50%;
-    opacity: 0.7;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    max-height: 100%;
+    background: transparent;
 }
+
 
 @keyframes storytelling {
     0%, 100% { transform: translateX(-50%) scale(1); }
@@ -570,6 +542,240 @@ body {
 @keyframes twinkle {
     0%, 100% { opacity: 1; transform: scale(1); }
     50% { opacity: 0.7; transform: scale(1.2); }
+}
+
+/* Objective Section */
+.objective {
+    padding: 5rem 0;
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.05), rgba(76, 175, 80, 0.02));
+}
+
+.objective-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.objective-intro {
+    margin-bottom: 3rem;
+}
+
+.objective-intro p {
+    font-size: 1.4rem;
+    color: #2E7D32;
+    font-weight: 600;
+    font-style: italic;
+    margin-bottom: 0;
+}
+
+.objectives-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.objective-card {
+    background: white;
+    padding: 2.5rem 2rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(76, 175, 80, 0.1);
+    border: 2px solid rgba(76, 175, 80, 0.1);
+    transition: all 0.3s ease;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.objective-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #4CAF50, #2E7D32);
+}
+
+.objective-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(76, 175, 80, 0.2);
+    border-color: #4CAF50;
+}
+
+.objective-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #4CAF50, #2E7D32);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    color: white;
+    font-size: 2rem;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+}
+
+.objective-card h3 {
+    font-size: 1.4rem;
+    color: #2E7D32;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.objective-card p {
+    color: #666;
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+/* School Workshops Section */
+.school-workshops {
+    padding: 5rem 0;
+    background: white;
+}
+
+.workshops-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.workshops-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+}
+
+.workshop-category {
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.05), rgba(76, 175, 80, 0.02));
+    padding: 2.5rem;
+    border-radius: 20px;
+    border: 2px solid rgba(76, 175, 80, 0.1);
+}
+
+.workshop-category h3 {
+    font-size: 1.8rem;
+    color: #2E7D32;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-weight: 600;
+    position: relative;
+}
+
+.workshop-category h3::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(90deg, #4CAF50, #2E7D32);
+    border-radius: 2px;
+}
+
+.workshop-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.workshop-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(76, 175, 80, 0.1);
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    color: #333;
+}
+
+.workshop-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.15);
+    border-color: #4CAF50;
+}
+
+.workshop-item i {
+    color: #4CAF50;
+    font-size: 1.2rem;
+    margin-right: 1rem;
+    width: 20px;
+    text-align: center;
+}
+
+.workshop-item span {
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.workshop-note {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.note-card {
+    display: inline-flex;
+    align-items: center;
+    background: linear-gradient(135deg, #4CAF50, #2E7D32);
+    color: white;
+    padding: 1.5rem 2rem;
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3);
+    max-width: 600px;
+}
+
+.note-card i {
+    font-size: 1.5rem;
+    margin-right: 1rem;
+    opacity: 0.9;
+}
+
+.note-card p {
+    margin: 0;
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+.note-card strong {
+    font-weight: 600;
+}
+
+/* Responsive Design for School Workshops */
+@media (max-width: 768px) {
+    .workshops-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .workshop-category {
+        padding: 2rem;
+    }
+    
+    .workshop-category h3 {
+        font-size: 1.5rem;
+    }
+    
+    .workshop-item {
+        padding: 0.8rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .note-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 1.5rem;
+    }
+    
+    .note-card i {
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+    }
 }
 
 /* Programs Section */

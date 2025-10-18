@@ -1,3 +1,151 @@
+// Form Integration Functions
+function openBookingModal(serviceType = 'general') {
+    const modal = document.getElementById('bookingModal');
+    const sessionTypeSelect = document.getElementById('sessionType');
+    
+    // Set the service type based on the button clicked
+    if (sessionTypeSelect) {
+        sessionTypeSelect.value = serviceType;
+    }
+    
+    // Update modal title based on service type
+    const modalTitle = document.getElementById('modal-title');
+    const titles = {
+        'general': 'Book a Storytelling Session',
+        'school-programs': 'Book School Program Session',
+        'ngo-events': 'Book NGO & Community Event',
+        'hotel-events': 'Book Hotel Event Session',
+        'teacher-training': 'Book Teacher Training Session',
+        'workshop-school': 'Book School Workshop',
+        'workshop-teacher': 'Book Teacher Training Program'
+    };
+    
+    if (modalTitle) {
+        modalTitle.textContent = titles[serviceType] || titles['general'];
+    }
+    
+    // Show modal
+    modal.style.display = 'flex';
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    
+    // Focus on first input
+    setTimeout(() => {
+        const firstInput = modal.querySelector('input, select, textarea');
+        if (firstInput) firstInput.focus();
+    }, 100);
+}
+
+function closeBookingModal() {
+    const modal = document.getElementById('bookingModal');
+    modal.style.display = 'none';
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = 'auto';
+    
+    // Reset form
+    const form = document.getElementById('bookingForm');
+    if (form) {
+        form.reset();
+        clearAllBookingErrors();
+    }
+}
+
+function showThankYouScreen() {
+    // Close the booking modal first
+    closeBookingModal();
+    
+    // Create thank you overlay
+    const thankYouOverlay = document.createElement('div');
+    thankYouOverlay.id = 'thankYouOverlay';
+    thankYouOverlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    `;
+    
+    // Create thank you content
+    const thankYouContent = document.createElement('div');
+    thankYouContent.style.cssText = `
+        background: white;
+        padding: 3rem;
+        border-radius: 20px;
+        text-align: center;
+        max-width: 500px;
+        margin: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        transform: scale(0.8);
+        transition: transform 0.3s ease;
+    `;
+    
+    thankYouContent.innerHTML = `
+        <div style="color: #4CAF50; font-size: 4rem; margin-bottom: 1rem;">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h2 style="color: #2E7D32; margin-bottom: 1rem; font-size: 2rem;">Thank You!</h2>
+        <p style="color: #666; font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">
+            Your booking request has been submitted successfully!<br>
+            We'll contact you within 24 hours to confirm your session.
+        </p>
+        <div style="color: #4CAF50; font-size: 0.9rem;">
+            <i class="fas fa-clock"></i> This window will close automatically in <span id="countdown">5</span> seconds
+        </div>
+    `;
+    
+    thankYouOverlay.appendChild(thankYouContent);
+    document.body.appendChild(thankYouOverlay);
+    
+    // Animate in
+    setTimeout(() => {
+        thankYouOverlay.style.opacity = '1';
+        thankYouContent.style.transform = 'scale(1)';
+    }, 10);
+    
+    // Countdown timer
+    let countdown = 5;
+    const countdownElement = document.getElementById('countdown');
+    
+    const timer = setInterval(() => {
+        countdown--;
+        if (countdownElement) {
+            countdownElement.textContent = countdown;
+        }
+        
+        if (countdown <= 0) {
+            clearInterval(timer);
+            closeThankYouScreen();
+        }
+    }, 1000);
+    
+    // Close on click outside
+    thankYouOverlay.addEventListener('click', (e) => {
+        if (e.target === thankYouOverlay) {
+            clearInterval(timer);
+            closeThankYouScreen();
+        }
+    });
+}
+
+function closeThankYouScreen() {
+    const thankYouOverlay = document.getElementById('thankYouOverlay');
+    if (thankYouOverlay) {
+        thankYouOverlay.style.opacity = '0';
+        setTimeout(() => {
+            if (thankYouOverlay.parentNode) {
+                thankYouOverlay.parentNode.removeChild(thankYouOverlay);
+            }
+        }, 300);
+    }
+}
+
 // Smooth scrolling for navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
@@ -510,11 +658,8 @@ function handleFormSubmission(e) {
             group.classList.remove('success');
         });
         
-        // Show success message
-        showNotification('Thank you! Your message has been sent successfully. We\'ll get back to you soon!', 'success');
-        
-        // Scroll to top of form
-        form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Show thank you screen
+        showThankYouScreen();
         
     }, 2000);
 }
@@ -633,7 +778,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Open modal
     if (bookSessionBtn) {
         bookSessionBtn.addEventListener('click', () => {
-            openBookingModal();
+            openBookingModal('general');
         });
     }
     
@@ -647,13 +792,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // Close modal when clicking outside
-    if (bookingModal) {
-        bookingModal.addEventListener('click', (e) => {
-            if (e.target === bookingModal) {
+    const modalOverlay = document.getElementById('bookingModal');
+    if (modalOverlay) {
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
                 closeBookingModal();
             }
         });
     }
+    
     
     // Handle booking form submission
     if (bookingForm) {
@@ -804,6 +951,19 @@ function clearBookingError(field) {
     formGroup.classList.remove('error');
 }
 
+function clearAllBookingErrors() {
+    const errorMessages = document.querySelectorAll('#bookingModal .error-message');
+    const errorGroups = document.querySelectorAll('#bookingModal .form-group.error');
+    
+    errorMessages.forEach(error => {
+        error.textContent = '';
+    });
+    
+    errorGroups.forEach(group => {
+        group.classList.remove('error');
+    });
+}
+
 function getBookingFieldLabel(fieldName) {
     const labels = {
         'bookingName': 'Full Name',
@@ -849,15 +1009,12 @@ function handleBookingSubmission(e) {
     
     // Simulate booking submission (replace with actual API call)
     setTimeout(() => {
+        // Show thank you screen
+        showThankYouScreen();
+        
         // Reset button
         submitButton.innerHTML = originalButtonText;
         submitButton.disabled = false;
-        
-        // Close modal
-        closeBookingModal();
-        
-        // Show success message
-        showNotification('Booking request submitted successfully! We\'ll contact you within 24 hours to confirm your session.', 'success');
         
     }, 2000);
 }
