@@ -3,8 +3,10 @@ function openBookingModal(serviceType = 'general') {
     const modal = document.getElementById('bookingModal');
     const sessionTypeSelect = document.getElementById('sessionType');
     
+    if (!modal) return;
+    
     // Set the service type based on the button clicked
-    if (sessionTypeSelect) {
+    if (sessionTypeSelect && serviceType) {
         sessionTypeSelect.value = serviceType;
     }
     
@@ -17,15 +19,26 @@ function openBookingModal(serviceType = 'general') {
         'hotel-events': 'Book Hotel Event Session',
         'teacher-training': 'Book Teacher Training Session',
         'workshop-school': 'Book School Workshop',
-        'workshop-teacher': 'Book Teacher Training Program'
+        'workshop-teacher': 'Book Teacher Training Program',
+        'beginners-reading': 'Book Beginners Reading Club',
+        'storytime': 'Book Storytime Class',
+        'creative-writing': 'Book Grammar Basics and Creative Writing',
+        'public-speaking': 'Book Public Speaking & Debate Class'
     };
     
     if (modalTitle) {
         modalTitle.textContent = titles[serviceType] || titles['general'];
     }
     
+    // Set minimum date to today
+    const dateInput = document.getElementById('preferredDate');
+    if (dateInput) {
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.min = today;
+    }
+    
     // Show modal
-    modal.style.display = 'flex';
+    modal.classList.add('active');
     modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
     
@@ -38,7 +51,9 @@ function openBookingModal(serviceType = 'general') {
 
 function closeBookingModal() {
     const modal = document.getElementById('bookingModal');
-    modal.style.display = 'none';
+    if (!modal) return;
+    
+    modal.classList.remove('active');
     modal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = 'auto';
     
@@ -46,7 +61,14 @@ function closeBookingModal() {
     const form = document.getElementById('bookingForm');
     if (form) {
         form.reset();
-        clearAllBookingErrors();
+        // Clear all error states
+        form.querySelectorAll('.form-group').forEach(group => {
+            group.classList.remove('error', 'success');
+        });
+        // Clear all error messages
+        form.querySelectorAll('.error-message').forEach(error => {
+            error.textContent = '';
+        });
     }
 }
 
@@ -196,6 +218,51 @@ document.addEventListener('DOMContentLoaded', () => {
         el.style.transform = 'translateY(30px)';
         el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         observer.observe(el);
+    });
+    
+    // Handle class images - hide icons when images load successfully
+    const classPhotos = document.querySelectorAll('.class-photo');
+    classPhotos.forEach(photo => {
+        const icon = photo.parentElement.querySelector('.class-icon');
+        
+        // Function to hide icon when image loads
+        const hideIcon = () => {
+            if (icon) {
+                icon.style.opacity = '0';
+            }
+        };
+        
+        // Function to show icon when image fails
+        const showIcon = () => {
+            if (icon) {
+                icon.style.opacity = '1';
+            }
+            photo.style.display = 'none';
+        };
+        
+        // Check if image has a valid source
+        if (photo.src && photo.src.trim() !== '' && !photo.src.includes('undefined') && !photo.src.includes('null')) {
+            // Image has a valid source
+            photo.onload = function() {
+                hideIcon();
+            };
+            
+            photo.onerror = function() {
+                // If image fails to load, show icon as fallback
+                showIcon();
+            };
+            
+            // Check if image is already loaded (cached images)
+            if (photo.complete && photo.naturalHeight !== 0) {
+                hideIcon();
+            } else if (photo.complete && photo.naturalHeight === 0) {
+                // Image failed to load
+                showIcon();
+            }
+        } else {
+            // No valid image source, show icon
+            showIcon();
+        }
     });
 });
 
@@ -562,7 +629,8 @@ function validateField(field) {
     
     // Email validation
     if (fieldName === 'email' && value) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        // More comprehensive email regex that handles edge cases
+        const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
         if (!emailRegex.test(value)) {
             showFieldError(formGroup, 'Please enter a valid email address');
             return false;
@@ -571,9 +639,16 @@ function validateField(field) {
     
     // Phone validation (if provided)
     if (fieldName === 'phone' && value) {
-        const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
-        if (!phoneRegex.test(value.replace(/\s/g, ''))) {
-            showFieldError(formGroup, 'Please enter a valid phone number');
+        // Get country code and combine with phone number
+        const countryCodeSelect = formGroup.querySelector('#phoneCountryCode');
+        const countryCode = countryCodeSelect ? countryCodeSelect.value : '+91';
+        const fullPhoneNumber = countryCode + value;
+        
+        // More flexible phone regex that allows numbers starting with 0
+        const cleanedPhone = fullPhoneNumber.replace(/[\s\-\(\)]/g, ''); // Remove spaces, dashes, parentheses
+        const phoneRegex = /^[\+]?[0-9]\d{6,19}$/; // Must start with 0-9, then 6-19 more digits
+        if (!phoneRegex.test(cleanedPhone)) {
+            showFieldError(formGroup, 'Please enter a valid phone number (7-20 digits)');
             return false;
         }
     }
@@ -605,6 +680,24 @@ function clearError(field) {
     formGroup.classList.remove('error');
 }
 
+function clearAllContactErrors() {
+    const errorMessages = document.querySelectorAll('#contactForm .error-message');
+    const errorGroups = document.querySelectorAll('#contactForm .form-group.error');
+    const successGroups = document.querySelectorAll('#contactForm .form-group.success');
+    
+    errorMessages.forEach(error => {
+        error.textContent = '';
+    });
+    
+    errorGroups.forEach(group => {
+        group.classList.remove('error');
+    });
+    
+    successGroups.forEach(group => {
+        group.classList.remove('success');
+    });
+}
+
 function getFieldLabel(fieldName) {
     const labels = {
         'name': 'Full Name',
@@ -622,6 +715,15 @@ function handleFormSubmission(e) {
     
     const form = e.target;
     const formData = new FormData(form);
+    
+    // Combine country code with phone number if phone is provided
+    const phoneInput = form.querySelector('#phone');
+    const countryCodeSelect = form.querySelector('#phoneCountryCode');
+    if (phoneInput && phoneInput.value && countryCodeSelect) {
+        const fullPhoneNumber = countryCodeSelect.value + phoneInput.value;
+        formData.set('fullPhoneNumber', fullPhoneNumber);
+    }
+    
     const submitButton = form.querySelector('button[type="submit"]');
     const originalButtonText = submitButton.innerHTML;
     
@@ -653,10 +755,8 @@ function handleFormSubmission(e) {
         submitButton.innerHTML = originalButtonText;
         submitButton.disabled = false;
         
-        // Clear all success states
-        form.querySelectorAll('.form-group').forEach(group => {
-            group.classList.remove('success');
-        });
+        // Clear all success and error states
+        clearAllContactErrors();
         
         // Show thank you screen
         showThankYouScreen();
@@ -845,46 +945,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-function openBookingModal() {
-    const modal = document.getElementById('bookingModal');
-    if (modal) {
-        modal.classList.add('active');
-        modal.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden'; // Prevent background scrolling
-        
-        // Set minimum date to today
-        const dateInput = document.getElementById('preferredDate');
-        if (dateInput) {
-            const today = new Date().toISOString().split('T')[0];
-            dateInput.min = today;
-        }
-        
-        // Focus on first input for keyboard users
-        const firstInput = modal.querySelector('input, select, textarea');
-        if (firstInput) {
-            setTimeout(() => firstInput.focus(), 100);
-        }
-    }
-}
-
-function closeBookingModal() {
-    const modal = document.getElementById('bookingModal');
-    if (modal) {
-        modal.classList.remove('active');
-        modal.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = ''; // Restore scrolling
-        
-        // Reset form
-        const form = document.getElementById('bookingForm');
-        if (form) {
-            form.reset();
-            // Clear all error states
-            form.querySelectorAll('.form-group').forEach(group => {
-                group.classList.remove('error', 'success');
-            });
-        }
-    }
-}
 
 function validateBookingField(field) {
     const value = field.value.trim();
@@ -902,7 +962,8 @@ function validateBookingField(field) {
     
     // Email validation
     if (fieldName === 'bookingEmail' && value) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        // More comprehensive email regex that handles edge cases
+        const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
         if (!emailRegex.test(value)) {
             showBookingFieldError(formGroup, 'Please enter a valid email address');
             return false;
@@ -911,9 +972,16 @@ function validateBookingField(field) {
     
     // Phone validation
     if (fieldName === 'bookingPhone' && value) {
-        const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
-        if (!phoneRegex.test(value.replace(/\s/g, ''))) {
-            showBookingFieldError(formGroup, 'Please enter a valid phone number');
+        // Get country code and combine with phone number
+        const countryCodeSelect = formGroup.querySelector('#bookingPhoneCountryCode');
+        const countryCode = countryCodeSelect ? countryCodeSelect.value : '+91';
+        const fullPhoneNumber = countryCode + value;
+        
+        // More flexible phone regex that allows numbers starting with 0
+        const cleanedPhone = fullPhoneNumber.replace(/[\s\-\(\)]/g, ''); // Remove spaces, dashes, parentheses
+        const phoneRegex = /^[\+]?[0-9]\d{6,19}$/; // Must start with 0-9, then 6-19 more digits
+        if (!phoneRegex.test(cleanedPhone)) {
+            showBookingFieldError(formGroup, 'Please enter a valid phone number (7-20 digits)');
             return false;
         }
     }
@@ -928,6 +996,21 @@ function validateBookingField(field) {
             showBookingFieldError(formGroup, 'Please select a future date');
             return false;
         }
+    }
+    
+    // Number validation for participant count
+    if (fieldName === 'participantCount' && value) {
+        const count = parseInt(value);
+        if (isNaN(count) || count < 1 || count > 500) {
+            showBookingFieldError(formGroup, 'Please enter a valid number between 1 and 500');
+            return false;
+        }
+    }
+    
+    // Special requirements length validation
+    if (fieldName === 'specialRequirements' && value && value.length < 10) {
+        showBookingFieldError(formGroup, 'Please provide more details (at least 10 characters)');
+        return false;
     }
     
     // Show success state for valid fields
@@ -954,6 +1037,7 @@ function clearBookingError(field) {
 function clearAllBookingErrors() {
     const errorMessages = document.querySelectorAll('#bookingModal .error-message');
     const errorGroups = document.querySelectorAll('#bookingModal .form-group.error');
+    const successGroups = document.querySelectorAll('#bookingModal .form-group.success');
     
     errorMessages.forEach(error => {
         error.textContent = '';
@@ -961,6 +1045,10 @@ function clearAllBookingErrors() {
     
     errorGroups.forEach(group => {
         group.classList.remove('error');
+    });
+    
+    successGroups.forEach(group => {
+        group.classList.remove('success');
     });
 }
 
@@ -985,6 +1073,15 @@ function handleBookingSubmission(e) {
     
     const form = e.target;
     const formData = new FormData(form);
+    
+    // Combine country code with phone number if phone is provided
+    const phoneInput = form.querySelector('#bookingPhone');
+    const countryCodeSelect = form.querySelector('#bookingPhoneCountryCode');
+    if (phoneInput && phoneInput.value && countryCodeSelect) {
+        const fullPhoneNumber = countryCodeSelect.value + phoneInput.value;
+        formData.set('fullPhoneNumber', fullPhoneNumber);
+    }
+    
     const submitButton = form.querySelector('button[type="submit"]');
     const originalButtonText = submitButton.innerHTML;
     

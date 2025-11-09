@@ -79,7 +79,8 @@ body {
 
 .nav-menu {
     display: flex;
-    gap: 2rem;
+    gap: 1.5rem;
+    flex-wrap: wrap;
 }
 
 .nav-link {
@@ -140,7 +141,7 @@ body {
     height: 100%;
     z-index: 1;
     display: flex;
-    align-items: center;
+    align-items: center;image.png
     justify-content: center;
 }
 
@@ -719,6 +720,36 @@ body {
     font-weight: 600;
 }
 
+/* Workshop Category Buttons */
+.workshop-category-button {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(76, 175, 80, 0.2);
+}
+
+.workshop-category-button .cta-button {
+    position: relative;
+    transform: scale(1.02);
+    box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3), 0 0 15px rgba(76, 175, 80, 0.2);
+    animation: buttonGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes buttonGlow {
+    0% {
+        box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3), 0 0 15px rgba(76, 175, 80, 0.2);
+    }
+    100% {
+        box-shadow: 0 12px 30px rgba(76, 175, 80, 0.4), 0 0 20px rgba(76, 175, 80, 0.3);
+    }
+}
+
+.workshop-category-button .cta-button:hover {
+    transform: scale(1.05) translateY(-2px);
+    box-shadow: 0 15px 35px rgba(76, 175, 80, 0.5), 0 0 25px rgba(76, 175, 80, 0.4);
+    animation: none;
+}
+
 /* Responsive Design for School Workshops */
 @media (max-width: 768px) {
     .workshops-grid {
@@ -749,6 +780,181 @@ body {
         margin-right: 0;
         margin-bottom: 0.5rem;
     }
+    
+    .workshop-category-button {
+        margin-top: 1.5rem;
+        padding-top: 1rem;
+    }
+}
+
+/* Story Tree Classes Section */
+.story-tree-classes {
+    padding: 6rem 0;
+    background: white;
+}
+
+.story-tree-classes .section-header h2 {
+    color: #2E7D32;
+}
+
+.story-tree-classes .section-header p {
+    color: #666;
+}
+
+.classes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.class-card {
+    background: linear-gradient(135deg, #FFF3E0 0%, #E8F5E8 100%);
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    min-height: 500px;
+    border: 3px solid transparent;
+}
+
+.class-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    border-color: #4CAF50;
+}
+
+.class-image {
+    background: linear-gradient(135deg, #F5F5F5 0%, #E0E0E0 100%);
+    min-height: 250px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.class-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    transition: transform 0.3s ease;
+}
+
+.class-card:hover .class-photo {
+    transform: scale(1.05);
+}
+
+.class-icon {
+    font-size: 7rem;
+    color: rgba(76, 175, 80, 0.2);
+    z-index: 2;
+    position: absolute;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+/* Show icon as fallback - will be hidden by JavaScript when image loads */
+.class-image .class-icon {
+    opacity: 1;
+}
+
+/* Hide icon when image is present and loaded */
+.class-image:has(.class-photo[src]:not([src=""])) .class-icon {
+    opacity: 0;
+}
+
+.class-photo[src=""],
+.class-photo:not([src]) {
+    display: none;
+}
+
+.class-card:nth-child(1) .class-icon {
+    color: rgba(255, 167, 38, 0.3);
+}
+
+.class-card:nth-child(2) .class-icon {
+    color: rgba(76, 175, 80, 0.3);
+}
+
+.class-card:nth-child(3) .class-icon {
+    color: rgba(239, 83, 80, 0.3);
+}
+
+.class-card:nth-child(4) .class-icon {
+    color: rgba(76, 175, 80, 0.3);
+}
+
+.class-content {
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.8);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    backdrop-filter: blur(10px);
+}
+
+.class-title {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+}
+
+.class-title-1 {
+    color: #2E7D32; /* Green */
+}
+
+.class-title-2 {
+    color: #2E7D32; /* Green */
+}
+
+.class-title-3 {
+    color: #2E7D32; /* Green */
+}
+
+.class-title-4 {
+    color: #2E7D32; /* Green */
+}
+
+.class-description {
+    color: #666;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    flex: 1;
+}
+
+.class-age {
+    color: #4CAF50;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-top: auto;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-top: 1px solid rgba(76, 175, 80, 0.2);
+    margin-bottom: 1rem;
+}
+
+.class-buttons {
+    margin-top: auto;
+    padding-top: 1rem;
+    text-align: center;
+}
+
+.class-buttons .cta-button {
+    width: 100%;
+    justify-content: center;
 }
 
 /* Programs Section */
@@ -1072,13 +1278,44 @@ body {
 .form-group input,
 .form-group select,
 .form-group textarea {
-    padding: 12px 15px;
+    padding: 10px 12px;
     border: 2px solid #E0E0E0;
-    border-radius: 10px;
-    font-size: 1rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
     font-family: 'Poppins', sans-serif;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
     background: #FAFAFA;
+}
+
+/* Phone Input Container */
+.phone-input-container {
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+}
+
+.country-code-select {
+    flex: 0 0 120px;
+    padding: 10px 8px;
+    border: 2px solid #E0E0E0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: 'Poppins', sans-serif;
+    background: #FAFAFA;
+    cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.country-code-select:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+    background: white;
+}
+
+.phone-input-container input[type="tel"] {
+    flex: 1;
+    margin: 0;
 }
 
 .form-group input:focus,
@@ -1408,6 +1645,36 @@ body {
         grid-template-columns: 1fr;
     }
     
+    .classes-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .class-card {
+        min-height: 400px;
+    }
+    
+    .class-image {
+        min-height: 200px;
+    }
+    
+    .class-icon {
+        font-size: 5rem;
+    }
+    
+    .class-content {
+        padding: 1.5rem;
+    }
+    
+    .class-title {
+        font-size: 1.5rem;
+    }
+    
+    .class-buttons .cta-button {
+        padding: 12px 20px;
+        font-size: 1rem;
+    }
+    
     .benefits-grid {
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     }
@@ -1476,12 +1743,31 @@ body {
     
     .modal-container {
         margin: 10px;
-        max-height: 95vh;
+        max-height: 98vh;
+        max-width: calc(100vw - 20px);
     }
     
-    .modal-header,
+    .modal-header {
+        padding: 1rem 1.5rem 0.8rem;
+    }
+    
     .modal-body {
-        padding: 1.5rem;
+        padding: 1rem 1.5rem;
+    }
+    
+    .modal-header h3 {
+        font-size: 1.5rem;
+    }
+    
+    /* Phone input responsive */
+    .phone-input-container {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .country-code-select {
+        flex: none;
+        width: 100%;
     }
 }
 
@@ -1517,9 +1803,10 @@ body {
     display: none;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 15px;
     opacity: 0;
     transition: opacity 0.3s ease;
+    box-sizing: border-box;
 }
 
 .modal-overlay.active {
@@ -1530,13 +1817,15 @@ body {
 .modal-container {
     background: white;
     border-radius: 20px;
-    max-width: 600px;
+    max-width: 650px;
     width: 100%;
-    max-height: 90vh;
-    overflow-y: auto;
+    max-height: 95vh;
+    overflow: hidden;
     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
     transform: scale(0.9) translateY(20px);
     transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
 }
 
 .modal-overlay.active .modal-container {
@@ -1547,8 +1836,9 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 2rem 2rem 1rem;
+    padding: 1.5rem 2rem 1rem;
     border-bottom: 1px solid #E0E0E0;
+    flex-shrink: 0;
 }
 
 .modal-header h3 {
@@ -1580,19 +1870,22 @@ body {
 }
 
 .modal-body {
-    padding: 2rem;
+    padding: 1.5rem 2rem;
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
 }
 
 .booking-form {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.2rem;
 }
 
 .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+    gap: 0.8rem;
 }
 
 .modal-actions {

@@ -127,9 +127,12 @@
                 <span>The Story Tree</span>
             </div>
             <div class="nav-menu" id="nav-menu" role="menubar">
+                <a href="#home" class="nav-link" role="menuitem" aria-label="Go to Home section">Home</a>
                 <a href="#about" class="nav-link" role="menuitem" aria-label="Go to About section">About</a>
                 <a href="#objective" class="nav-link" role="menuitem" aria-label="Go to Objective section">Objectives</a>
+                <a href="#school-workshops" class="nav-link" role="menuitem" aria-label="Go to School Workshops section">Workshops</a>
                 <a href="#programs" class="nav-link" role="menuitem" aria-label="Go to Programs section">Programs</a>
+                <a href="#story-tree-classes" class="nav-link" role="menuitem" aria-label="Go to Story Tree Classes section">Classes</a>
                 <a href="#instagram" class="nav-link" role="menuitem" aria-label="Go to Instagram section">Instagram</a>
                 <a href="#contact" class="nav-link" role="menuitem" aria-label="Go to Contact section">Contact</a>
             </div>
@@ -297,6 +300,12 @@
                                 <span>Presentation Skills Training for Students</span>
                             </div>
                         </div>
+                        <div class="workshop-category-button">
+                            <button class="cta-button primary" onclick="openBookingModal('workshop-school')" aria-label="Book student programs workshop">
+                                <i class="fas fa-calendar-plus" aria-hidden="true"></i>
+                                Book Student Programs
+                            </button>
+                        </div>
                     </div>
                     
                     <div class="workshop-category">
@@ -346,6 +355,12 @@
                                 <i class="fas fa-balance-scale"></i>
                                 <span>Conflict Resolution in Educational Settings</span>
                             </div>
+                        </div>
+                        <div class="workshop-category-button">
+                            <button class="cta-button primary" onclick="openBookingModal('workshop-teacher')" aria-label="Book teacher training programs">
+                                <i class="fas fa-calendar-plus" aria-hidden="true"></i>
+                                Book Teacher Training
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -452,6 +467,89 @@
                     </div>
                     <h4>Works for Large Groups</h4>
                     <p>Engages effectively with groups of any size</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Story Tree Classes Section -->
+    <section class="story-tree-classes" id="story-tree-classes" role="region" aria-labelledby="classes-title">
+        <div class="container">
+            <div class="section-header">
+                <h2 id="classes-title">Story Tree Classes</h2>
+                <p>Age-appropriate programs designed to nurture young minds</p>
+            </div>
+            <div class="classes-grid">
+                <div class="class-card">
+                    <div class="class-image">
+                        <img src="speech-drama-boy.jpg" alt="Beginners Reading Club - Young boy in overalls with hat" class="class-photo" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.opacity='1';">
+                        <i class="fas fa-book-reader class-icon"></i>
+                    </div>
+                    <div class="class-content">
+                        <h3 class="class-title class-title-1">Beginners Reading Club</h3>
+                        <p class="class-description">Discover the joy of reading and build foundational literacy skills</p>
+                        <p class="class-age">Ages up to 5 Years</p>
+                        <div class="class-buttons">
+                            <button class="cta-button primary" onclick="openBookingModal('beginners-reading')" aria-label="Book Beginners Reading Club class">
+                                <i class="fas fa-calendar-plus" aria-hidden="true"></i>
+                                Book Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="class-card">
+                    <div class="class-image">
+                        <img src="girl-with-books.jpg" alt="Storytime - Girl with stack of books" class="class-photo" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.opacity='1';">
+                        <i class="fas fa-book-open class-icon"></i>
+                    </div>
+                    <div class="class-content">
+                        <h3 class="class-title class-title-2">Storytime</h3>
+                        <p class="class-description">Engaging storytelling sessions that spark imagination and creativity</p>
+                        <p class="class-age">Ages 6 to 10 Years</p>
+                        <div class="class-buttons">
+                            <button class="cta-button primary" onclick="openBookingModal('storytime')" aria-label="Book Storytime class">
+                                <i class="fas fa-calendar-plus" aria-hidden="true"></i>
+                                Book Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="class-card">
+                    <div class="class-image">
+                        <img src="girl-pointing.jpg" alt="Grammar Basics and Creative Writing - Girl pointing confidently" class="class-photo" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.opacity='1';">
+                        <i class="fas fa-pen-fancy class-icon"></i>
+                    </div>
+                    <div class="class-content">
+                        <h3 class="class-title class-title-3">Grammar Basics and Creative Writing</h3>
+                        <p class="class-description">Master language fundamentals and express yourself through creative writing</p>
+                        <p class="class-age">Ages 10 to 13 Years</p>
+                        <div class="class-buttons">
+                            <button class="cta-button primary" onclick="openBookingModal('creative-writing')" aria-label="Book Grammar Basics and Creative Writing class">
+                                <i class="fas fa-calendar-plus" aria-hidden="true"></i>
+                                Book Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="class-card">
+                    <div class="class-image">
+                        <img src="speech-drama-boy.jpg" alt="Public Speaking & Debate - Boy speaking on stage" class="class-photo" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.opacity='1';">
+                        <i class="fas fa-microphone-alt class-icon"></i>
+                    </div>
+                    <div class="class-content">
+                        <h3 class="class-title class-title-4">Public Speaking & Debate</h3>
+                        <p class="class-description">Build confidence and articulate your thoughts with powerful communication skills</p>
+                        <p class="class-age">Ages 8 to 12 Years</p>
+                        <div class="class-buttons">
+                            <button class="cta-button primary" onclick="openBookingModal('public-speaking')" aria-label="Book Public Speaking & Debate class">
+                                <i class="fas fa-calendar-plus" aria-hidden="true"></i>
+                                Book Now
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -634,16 +732,39 @@
                         </div>
                         <div class="form-group">
                             <label for="phone">Phone Number</label>
-                            <input type="tel" id="phone" name="phone" aria-describedby="phoneHelp">
-                            <small id="phoneHelp" class="form-help">Optional - Include country code for international numbers</small>
+                            <div class="phone-input-container">
+                                <select id="phoneCountryCode" name="phoneCountryCode" class="country-code-select">
+                                    <option value="+91">🇮🇳 +91</option>
+                                    <option value="+1">🇺🇸 +1</option>
+                                    <option value="+44">🇬🇧 +44</option>
+                                    <option value="+61">🇦🇺 +61</option>
+                                    <option value="+86">🇨🇳 +86</option>
+                                    <option value="+81">🇯🇵 +81</option>
+                                    <option value="+49">🇩🇪 +49</option>
+                                    <option value="+33">🇫🇷 +33</option>
+                                    <option value="+39">🇮🇹 +39</option>
+                                    <option value="+34">🇪🇸 +34</option>
+                                    <option value="+55">🇧🇷 +55</option>
+                                    <option value="+52">🇲🇽 +52</option>
+                                    <option value="+7">🇷🇺 +7</option>
+                                    <option value="+82">🇰🇷 +82</option>
+                                    <option value="+65">🇸🇬 +65</option>
+                                    <option value="+971">🇦🇪 +971</option>
+                                    <option value="+966">🇸🇦 +966</option>
+                                </select>
+                                <input type="tel" id="phone" name="phone" placeholder="9876543210" aria-describedby="phoneError phoneHelp" aria-invalid="false">
+                            </div>
+                            <small id="phoneHelp" class="form-help">Optional - Enter your phone number without country code</small>
+                            <span class="error-message" id="phoneError" role="alert" aria-live="polite"></span>
                         </div>
                         <div class="form-group">
                             <label for="organization">Organization/School</label>
-                            <input type="text" id="organization" name="organization">
+                            <input type="text" id="organization" name="organization" aria-describedby="organizationError" aria-invalid="false">
+                            <span class="error-message" id="organizationError" role="alert" aria-live="polite"></span>
                         </div>
                         <div class="form-group">
                             <label for="service">Service Interested In</label>
-                            <select id="service" name="service" aria-describedby="serviceHelp">
+                            <select id="service" name="service" aria-describedby="serviceError serviceHelp" aria-invalid="false">
                                 <option value="">Select a service</option>
                                 <option value="school-programs">School Programs</option>
                                 <option value="ngo-events">NGO & Community Events</option>
@@ -651,6 +772,7 @@
                                 <option value="teacher-training">Teacher's Training</option>
                             </select>
                             <small id="serviceHelp" class="form-help">Choose the type of session you're interested in</small>
+                            <span class="error-message" id="serviceError" role="alert" aria-live="polite"></span>
                         </div>
                         <div class="form-group">
                             <label for="message">Message *</label>
@@ -739,7 +861,28 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="bookingPhone">Phone Number *</label>
-                            <input type="tel" id="bookingPhone" name="bookingPhone" required>
+                            <div class="phone-input-container">
+                                <select id="bookingPhoneCountryCode" name="bookingPhoneCountryCode" class="country-code-select">
+                                    <option value="+91">🇮🇳 +91</option>
+                                    <option value="+1">🇺🇸 +1</option>
+                                    <option value="+44">🇬🇧 +44</option>
+                                    <option value="+61">🇦🇺 +61</option>
+                                    <option value="+86">🇨🇳 +86</option>
+                                    <option value="+81">🇯🇵 +81</option>
+                                    <option value="+49">🇩🇪 +49</option>
+                                    <option value="+33">🇫🇷 +33</option>
+                                    <option value="+39">🇮🇹 +39</option>
+                                    <option value="+34">🇪🇸 +34</option>
+                                    <option value="+55">🇧🇷 +55</option>
+                                    <option value="+52">🇲🇽 +52</option>
+                                    <option value="+7">🇷🇺 +7</option>
+                                    <option value="+82">🇰🇷 +82</option>
+                                    <option value="+65">🇸🇬 +65</option>
+                                    <option value="+971">🇦🇪 +971</option>
+                                    <option value="+966">🇸🇦 +966</option>
+                                </select>
+                                <input type="tel" id="bookingPhone" name="bookingPhone" placeholder="9876543210" required>
+                            </div>
                             <span class="error-message" id="bookingPhoneError"></span>
                         </div>
                         <div class="form-group">
@@ -759,32 +902,39 @@
                                 <option value="teacher-training">Teacher's Training</option>
                                 <option value="workshop-school">School Workshops</option>
                                 <option value="workshop-teacher">Teacher Training Programs</option>
+                                <option value="beginners-reading">Beginners Reading Club</option>
+                                <option value="storytime">Storytime</option>
+                                <option value="creative-writing">Grammar Basics and Creative Writing</option>
+                                <option value="public-speaking">Public Speaking & Debate</option>
                             </select>
                             <span class="error-message" id="sessionTypeError"></span>
                         </div>
                         <div class="form-group">
                             <label for="participantCount">Number of Participants</label>
-                            <input type="number" id="participantCount" name="participantCount" min="1" max="500">
+                            <input type="number" id="participantCount" name="participantCount" min="1" max="500" aria-describedby="participantCountError" aria-invalid="false">
+                            <span class="error-message" id="participantCountError" role="alert" aria-live="polite"></span>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label for="preferredDate">Preferred Date</label>
-                            <input type="date" id="preferredDate" name="preferredDate">
+                            <input type="date" id="preferredDate" name="preferredDate" aria-describedby="preferredDateError" aria-invalid="false">
+                            <span class="error-message" id="preferredDateError" role="alert" aria-live="polite"></span>
                         </div>
                         <div class="form-group">
                             <label for="preferredTime">Preferred Time</label>
-                            <select id="preferredTime" name="preferredTime">
+                            <select id="preferredTime" name="preferredTime" aria-describedby="preferredTimeError" aria-invalid="false">
                                 <option value="">Select time</option>
                                 <option value="morning">Morning (9:00 AM - 12:00 PM)</option>
                                 <option value="afternoon">Afternoon (12:00 PM - 5:00 PM)</option>
                                 <option value="evening">Evening (5:00 PM - 8:00 PM)</option>
                             </select>
+                            <span class="error-message" id="preferredTimeError" role="alert" aria-live="polite"></span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="sessionDuration">Session Duration</label>
-                        <select id="sessionDuration" name="sessionDuration">
+                        <select id="sessionDuration" name="sessionDuration" aria-describedby="sessionDurationError" aria-invalid="false">
                             <option value="">Select duration</option>
                             <option value="30">30 minutes</option>
                             <option value="45">45 minutes</option>
@@ -792,10 +942,12 @@
                             <option value="90">1.5 hours</option>
                             <option value="120">2 hours</option>
                         </select>
+                        <span class="error-message" id="sessionDurationError" role="alert" aria-live="polite"></span>
                     </div>
                     <div class="form-group">
                         <label for="specialRequirements">Special Requirements or Notes</label>
-                        <textarea id="specialRequirements" name="specialRequirements" rows="4" placeholder="Any specific requirements, age group, themes, or special instructions..."></textarea>
+                        <textarea id="specialRequirements" name="specialRequirements" rows="4" placeholder="Any specific requirements, age group, themes, or special instructions..." aria-describedby="specialRequirementsError" aria-invalid="false"></textarea>
+                        <span class="error-message" id="specialRequirementsError" role="alert" aria-live="polite"></span>
                     </div>
                     <div class="modal-actions">
                         <button type="button" class="cta-button secondary" id="cancelBooking">Cancel</button>
