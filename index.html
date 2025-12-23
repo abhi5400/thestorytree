@@ -47,6 +47,9 @@
     <link rel="icon" type="image/png" sizes="16x16" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
     
+    <!-- Preload hero banner for faster loading -->
+    <link rel="preload" as="image" href="Store tree banner.png" fetchpriority="high">
+    
     <!-- Preconnect to external domains -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -129,10 +132,12 @@
             <div class="nav-menu" id="nav-menu" role="menubar">
                 <a href="#home" class="nav-link" role="menuitem" aria-label="Go to Home section">Home</a>
                 <a href="#about" class="nav-link" role="menuitem" aria-label="Go to About section">About</a>
+                <a href="#founder" class="nav-link" role="menuitem" aria-label="Go to About the Founder section">Founder</a>
                 <a href="#objective" class="nav-link" role="menuitem" aria-label="Go to Objective section">Objectives</a>
                 <a href="#school-workshops" class="nav-link" role="menuitem" aria-label="Go to School Workshops section">Workshops</a>
                 <a href="#programs" class="nav-link" role="menuitem" aria-label="Go to Programs section">Programs</a>
                 <a href="#story-tree-classes" class="nav-link" role="menuitem" aria-label="Go to Story Tree Classes section">Classes</a>
+                <a href="#media-coverage" class="nav-link" role="menuitem" aria-label="Go to Media Coverage section">Media</a>
                 <a href="#instagram" class="nav-link" role="menuitem" aria-label="Go to Instagram section">Instagram</a>
                 <a href="#contact" class="nav-link" role="menuitem" aria-label="Go to Contact section">Contact</a>
             </div>
@@ -147,7 +152,7 @@
     <!-- Hero Section -->
     <section class="hero" id="home" role="banner" aria-labelledby="hero-title">
         <div class="hero-background">
-            <img src="Store tree banner.png" alt="The Story Tree - Magical storytelling for children" class="hero-banner-image" loading="eager" fetchpriority="high">
+            <img src="Store tree banner.png" alt="The Story Tree - Magical storytelling for children" class="hero-banner-image" loading="eager" fetchpriority="high" width="1920" height="1080">
         </div>
         
         <div class="hero-container">
@@ -190,6 +195,52 @@
                             <img src="logo.png" alt="The Story Tree Logo" class="about-logo" loading="lazy">
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About the Founder Section -->
+    <section class="founder" id="founder" role="region" aria-labelledby="founder-title">
+        <div class="container">
+            <div class="section-header">
+                <h2 id="founder-title">About the Founder</h2>
+                <p>Meet Pallavi Singh - Storyteller, Trainer & Educator</p>
+            </div>
+            <div class="founder-content">
+                <div class="founder-text">
+                    <div class="founder-bio">
+                        <div class="founder-bio-intro">
+                            <p>Donning many hats with ease, Pallavi is an MBA from Symbiosis Institute of Management Studies, Pune, and holds a B.Ed. from IGNOU. An ex-banker turned heritage hotelier, corporate trainer, and today a coach and storyteller by calling, her journey has been anything but ordinary.</p>
+                            
+                            <p>Her professional path has beautifully woven together education and hospitality—from serving as an Executive Board Member of a school management committee to being the Managing Director of Naila Bagh Palace and a Director in a private hospitality company. Along the way, she discovered her most powerful tool: storytelling.</p>
+                        </div>
+                        
+                        <div class="founder-bio-more" id="founderBioMore">
+                            <p>Currently, Pallavi brings her learning and lived experiences into training children and individuals alike, using stories to spark imagination, confidence, and clarity. She has conducted corporate trainings with organisations such as Genpact and Citibank (during her tenure as an employee), and has led numerous workshops and sessions for children across schools, cultural hubs, and activity centres in Jaipur.</p>
+                            
+                            <p>She now channels her training expertise to ignite creativity, strengthen interpersonal skills, and sharpen communication—often making learning feel less like a lesson and more like an adventure.</p>
+                            
+                            <p>At The Story Tree, Pallavi brings her uniquely sensitive, intuitive approach to nurturing communication and confidence—one story, one smile, and many "aha!" moments at a time 🌱✨</p>
+                        </div>
+                        
+                        <div class="founder-read-more-wrapper">
+                            <button class="read-more-btn" id="founderReadMoreBtn" onclick="toggleFounderBio()">
+                                <span class="read-more-text">Read More</span>
+                                <span class="read-less-text" style="display: none;">Read Less</span>
+                                <i class="fas fa-chevron-down read-more-icon" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="founder-link">
+                        <a href="https://abhi5400.github.io/pallavi-singh-website/index.html" class="cta-button secondary" target="_blank" rel="noopener noreferrer" aria-label="Visit Pallavi Singh's official website">
+                            <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                            Visit Pallavi Singh's Official Website
+                        </a>
+                    </div>
+                </div>
+                <div class="founder-image">
+                    <img src="image 5.jpg" alt="Pallavi Singh speaking at an event" class="founder-photo" loading="lazy">
                 </div>
             </div>
         </div>
@@ -537,6 +588,51 @@
                             </button>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Media Coverage Section -->
+    <section class="media-coverage" id="media-coverage" role="region" aria-labelledby="media-coverage-title">
+        <div class="container">
+            <div class="section-header">
+                <h2 id="media-coverage-title">Media Coverage</h2>
+                <p>Our journey as featured in the press</p>
+            </div>
+            <div class="media-grid">
+                <div class="media-item">
+                    <img src="Media Coverage/102693623_172126410926792_3811980227651829760_n.jpg" alt="Media coverage article" class="media-image" loading="lazy">
+                </div>
+                <div class="media-item">
+                    <img src="Media Coverage/105523286_177901517015948_1086158284523145981_n.jpg" alt="Media coverage article" class="media-image" loading="lazy">
+                </div>
+                <div class="media-item">
+                    <img src="Media Coverage/137199048_250527939753305_8838392367134492934_n.jpg" alt="Media coverage article" class="media-image" loading="lazy">
+                </div>
+                <div class="media-item">
+                    <img src="Media Coverage/80955812_125172342288866_1851474089642819584_n.jpg" alt="Media coverage article" class="media-image" loading="lazy">
+                </div>
+                <div class="media-item">
+                    <img src="Media Coverage/81435773_126144912191609_4860656347634466816_n.jpg" alt="Media coverage article" class="media-image" loading="lazy">
+                </div>
+                <div class="media-item">
+                    <img src="Media Coverage/89630793_148154609990639_4308468306651643904_n.jpg" alt="Media coverage article" class="media-image" loading="lazy">
+                </div>
+                <div class="media-item">
+                    <img src="Media Coverage/89773726_148154543323979_1189297343573262336_n.jpg" alt="Media coverage article" class="media-image" loading="lazy">
+                </div>
+                <div class="media-item">
+                    <img src="Media Coverage/89796478_148154586657308_9135402619777318912_n.jpg" alt="Media coverage article" class="media-image" loading="lazy">
+                </div>
+                <div class="media-item">
+                    <img src="Media Coverage/90146551_149627046510062_8785574084659380224_n.jpg" alt="Media coverage article" class="media-image" loading="lazy">
+                </div>
+                <div class="media-item">
+                    <img src="Media Coverage/Screenshot 2025-12-24 015649.png" alt="Media coverage article" class="media-image" loading="lazy">
+                </div>
+                <div class="media-item">
+                    <img src="Media Coverage/Screenshot 2025-12-24 015736.png" alt="Media coverage article" class="media-image" loading="lazy">
                 </div>
             </div>
         </div>
@@ -956,6 +1052,27 @@
                 instgrm.Embeds.process();
             }
         });
+        
+        // Toggle founder bio read more/less
+        function toggleFounderBio() {
+            const bioMore = document.getElementById('founderBioMore');
+            const readMoreBtn = document.getElementById('founderReadMoreBtn');
+            const readMoreText = readMoreBtn.querySelector('.read-more-text');
+            const readLessText = readMoreBtn.querySelector('.read-less-text');
+            const readMoreIcon = readMoreBtn.querySelector('.read-more-icon');
+            
+            if (bioMore.classList.contains('expanded')) {
+                bioMore.classList.remove('expanded');
+                readMoreBtn.classList.remove('expanded');
+                readMoreText.style.display = 'inline';
+                readLessText.style.display = 'none';
+            } else {
+                bioMore.classList.add('expanded');
+                readMoreBtn.classList.add('expanded');
+                readMoreText.style.display = 'none';
+                readLessText.style.display = 'inline';
+            }
+        }
     </script>
 </body>
 </html>
