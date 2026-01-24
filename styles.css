@@ -537,7 +537,7 @@ body {
     display: grid;
     grid-template-columns: 1.1fr 0.9fr;
     gap: 4rem;
-    align-items: start;
+    align-items: flex-start;
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
@@ -562,13 +562,14 @@ body {
 
 .founder-image {
     position: sticky;
-    top: 100px;
+    top: 20px;
     border-radius: 25px;
     overflow: hidden;
     box-shadow: 0 25px 70px rgba(0, 0, 0, 0.25);
     background: linear-gradient(135deg, #E8F5E8 0%, #FFF3E0 100%);
     height: fit-content;
     padding: 12px;
+    align-self: flex-start;
 }
 
 .founder-photo {
@@ -702,7 +703,7 @@ body {
 
 .media-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 2rem;
     max-width: 1200px;
     margin: 0 auto;
@@ -716,6 +717,7 @@ body {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     background: white;
     aspect-ratio: 4/3;
+    cursor: pointer;
 }
 
 .media-item:hover {
@@ -734,6 +736,244 @@ body {
 
 .media-item:hover .media-image {
     transform: scale(1.05);
+}
+
+/* Media Coverage – Collage (1st 40 pictures) */
+.media-collage {
+    margin-top: 4rem;
+    padding-top: 3rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.media-collage-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0 0 0.5rem 0;
+    text-align: center;
+}
+
+.media-collage-subtitle {
+    color: #666;
+    font-size: 1rem;
+    margin: 0 0 2rem 0;
+    text-align: center;
+}
+
+.media-collage-grid {
+    margin-top: 0;
+}
+
+/* Lightbox Styles */
+.lightbox-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.lightbox-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.lightbox-overlay.active .lightbox-close,
+.lightbox-overlay.active .lightbox-nav {
+    opacity: 1;
+    visibility: visible;
+}
+
+.lightbox-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.lightbox-image {
+    max-width: 100%;
+    max-height: 85vh;
+    object-fit: contain;
+    border-radius: 10px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: lightboxFadeIn 0.3s ease;
+}
+
+@keyframes lightboxFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
+    z-index: 10001;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    pointer-events: auto;
+}
+
+.lightbox-close i {
+    color: white;
+    font-size: 1.5rem;
+}
+
+.lightbox-close:hover {
+    background: rgba(0, 0, 0, 0.9);
+    border-color: rgba(255, 255, 255, 1);
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+}
+
+.lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
+    z-index: 10001;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    pointer-events: auto;
+}
+
+.lightbox-nav i {
+    color: white;
+    font-size: 1.5rem;
+}
+
+.lightbox-nav:hover {
+    background: rgba(0, 0, 0, 0.9);
+    border-color: rgba(255, 255, 255, 1);
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+}
+
+.lightbox-prev {
+    left: 20px;
+}
+
+.lightbox-next {
+    right: 20px;
+}
+
+.lightbox-counter {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: 500;
+    z-index: 10001;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Mobile responsive for lightbox */
+@media (max-width: 768px) {
+    .lightbox-nav {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+    
+    .lightbox-prev {
+        left: 10px;
+    }
+    
+    .lightbox-next {
+        right: 10px;
+    }
+    
+    .lightbox-close {
+        width: 45px;
+        height: 45px;
+        top: 10px;
+        right: 10px;
+        font-size: 1.2rem;
+    }
+    
+    .lightbox-content {
+        max-width: 95%;
+        max-height: 90vh;
+    }
+    
+    .lightbox-image {
+        max-height: 80vh;
+    }
+    
+    .lightbox-counter {
+        bottom: 10px;
+        font-size: 0.9rem;
+        padding: 8px 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .lightbox-nav {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+    
+    .lightbox-prev {
+        left: 5px;
+    }
+    
+    .lightbox-next {
+        right: 5px;
+    }
+    
+    .lightbox-close {
+        width: 40px;
+        height: 40px;
+        top: 5px;
+        right: 5px;
+        font-size: 1rem;
+    }
 }
 
 /* Objective Section */
@@ -1324,23 +1564,75 @@ body {
 .instagram-posts {
     padding: 6rem 0;
     background: white;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
 }
 
+/* Desktop: Grid Layout */
 .instagram-posts-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 2rem;
     max-width: 1200px;
     margin: 0 auto;
 }
 
+/* Mobile: Carousel Layout */
+.instagram-carousel-container {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 60px;
+    display: none; /* Hidden on desktop by default */
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.instagram-carousel-btn {
+    display: none; /* Hidden on desktop by default */
+}
+
+.instagram-posts-carousel {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.instagram-posts-track {
+    display: flex;
+    transition: transform 0.5s ease;
+    gap: 2rem;
+    will-change: transform;
+    width: 100%;
+    box-sizing: border-box;
+}
+
 .instagram-post {
     position: relative;
     border-radius: 15px;
-    overflow: hidden;
+    overflow: visible;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
     background: white;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+/* Desktop: Grid post styling */
+.instagram-posts-grid .instagram-post {
+    width: 100%;
+}
+
+/* Mobile: Carousel post styling */
+.instagram-posts-track .instagram-post {
+    flex: 0 0 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
 }
 
 .instagram-post:hover {
@@ -1348,11 +1640,108 @@ body {
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
 }
 
+.instagram-carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    z-index: 10;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.instagram-carousel-btn:hover {
+    background: rgba(0, 0, 0, 0.9);
+    border-color: rgba(255, 255, 255, 1);
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+}
+
+.instagram-carousel-btn i {
+    color: white;
+}
+
+.instagram-carousel-prev {
+    left: 5px;
+}
+
+.instagram-carousel-next {
+    right: 5px;
+}
+
+@media (max-width: 768px) {
+    .instagram-carousel-prev {
+        left: 0;
+    }
+    
+    .instagram-carousel-next {
+        right: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .instagram-carousel-prev {
+        left: 2px;
+    }
+    
+    .instagram-carousel-next {
+        right: 2px;
+    }
+}
+
 .instagram-media {
     width: 100%;
-    max-width: 400px;
+    max-width: 100%;
+    min-width: 320px;
     margin: 0 auto;
     display: block;
+    box-sizing: border-box;
+    overflow: visible;
+}
+
+/* Instagram embed iframe responsiveness */
+.instagram-media iframe {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 320px !important;
+    height: auto !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+}
+
+/* Ensure Instagram embed container is responsive */
+.instagram-post blockquote {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 320px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+}
+
+/* Additional Instagram embed wrapper styles */
+.instagram-post a {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: visible;
+}
+
+/* Ensure Instagram embed script-generated content is responsive */
+.instagram-post > * {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
 }
 
 .instagram-placeholder {
@@ -1365,6 +1754,9 @@ body {
     color: white;
     text-decoration: none;
     transition: all 0.3s ease;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
 }
 
 .instagram-placeholder:hover {
@@ -1926,9 +2318,28 @@ body {
         justify-content: center;
     }
     
-    .media-grid {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1.5rem;
+    .media-grid,
+    .media-collage-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+    
+    .media-collage {
+        margin-top: 3rem;
+        padding-top: 2rem;
+    }
+    
+    .media-collage-title {
+        font-size: 1.5rem;
+    }
+    
+    .media-collage-subtitle {
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .media-coverage {
+        padding: 4rem 0;
     }
     
     .programs-grid {
@@ -1969,9 +2380,91 @@ body {
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     }
     
+    /* Hide grid on mobile, show carousel */
     .instagram-posts-grid {
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 1.5rem;
+        display: none;
+    }
+    
+    .instagram-posts .container {
+        padding: 0 10px;
+        max-width: 100%;
+        overflow: hidden;
+    }
+    
+    .instagram-carousel-container {
+        display: block;
+        padding: 0 50px;
+        position: relative;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+    
+    .instagram-carousel-btn {
+        display: flex;
+        width: 40px;
+        height: 40px;
+        font-size: 0.9rem;
+    }
+    
+    .instagram-posts-carousel {
+        width: 100%;
+        overflow: hidden;
+    }
+    
+    .instagram-posts-track {
+        gap: 1rem;
+        width: 100%;
+    }
+    
+    .instagram-post {
+        flex: 0 0 calc(100% - 0px);
+        max-width: calc(100% - 0px);
+        width: 100%;
+        padding: 5px;
+        margin: 0;
+        box-sizing: border-box;
+        overflow: visible;
+    }
+    
+    .instagram-media {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto;
+        display: block;
+        object-fit: contain;
+        box-sizing: border-box;
+        margin: 0 auto;
+        transform: scale(0.95);
+        transform-origin: center;
+        overflow: visible;
+    }
+    
+    .instagram-media iframe {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        transform: scale(0.95);
+        transform-origin: center;
+        overflow: visible !important;
+    }
+    
+    .instagram-post blockquote {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+        overflow: visible !important;
+    }
+    
+    .instagram-placeholder {
+        width: 100%;
+        max-width: 100%;
+        aspect-ratio: 1;
+        min-height: auto;
+        box-sizing: border-box;
     }
     
     .instagram-placeholder i {
@@ -2062,6 +2555,34 @@ body {
 }
 
 @media (max-width: 480px) {
+    .media-grid,
+    .media-collage-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .media-collage {
+        margin-top: 2.5rem;
+        padding-top: 1.5rem;
+    }
+    
+    .media-collage-title {
+        font-size: 1.35rem;
+    }
+    
+    .media-collage-subtitle {
+        font-size: 0.9rem;
+        margin-bottom: 1.25rem;
+    }
+    
+    .media-item {
+        aspect-ratio: 4/3;
+    }
+    
+    .media-coverage {
+        padding: 3rem 0;
+    }
+    
     .hero-title {
         font-size: 1.5rem;
     }
@@ -2086,6 +2607,86 @@ body {
     
     .closing-content h2 {
         font-size: 2rem;
+    }
+    
+    .instagram-posts .container {
+        padding: 0 5px;
+        max-width: 100%;
+        overflow: hidden;
+    }
+    
+    .instagram-carousel-container {
+        padding: 0 45px;
+        position: relative;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+    
+    .instagram-carousel-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 0.85rem;
+    }
+    
+    .instagram-posts-carousel {
+        width: 100%;
+        overflow: hidden;
+    }
+    
+    .instagram-posts-track {
+        gap: 0.75rem;
+        width: 100%;
+    }
+    
+    .instagram-post {
+        flex: 0 0 calc(100% - 0px);
+        max-width: calc(100% - 0px);
+        width: 100%;
+        padding: 5px;
+        margin: 0;
+        box-sizing: border-box;
+        overflow: visible;
+    }
+    
+    .instagram-media {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto;
+        display: block;
+        object-fit: contain;
+        box-sizing: border-box;
+        margin: 0 auto;
+        transform: scale(0.9);
+        transform-origin: center;
+        overflow: visible;
+    }
+    
+    .instagram-media iframe {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        transform: scale(0.9);
+        transform-origin: center;
+        overflow: visible !important;
+    }
+    
+    .instagram-post blockquote {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+        overflow: visible !important;
+    }
+    
+    .instagram-placeholder {
+        width: 100%;
+        max-width: 100%;
+        aspect-ratio: 1;
+        min-height: auto;
+        box-sizing: border-box;
     }
 }
 

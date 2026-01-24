@@ -1115,3 +1115,318 @@ function handleBookingSubmission(e) {
         
     }, 2000);
 }
+
+// Image Lightbox Functionality
+let currentImageIndex = 0;
+const mediaImages = [
+    'Media Coverage/102693623_172126410926792_3811980227651829760_n.jpg',
+    'Media Coverage/105523286_177901517015948_1086158284523145981_n.jpg',
+    'Media Coverage/137199048_250527939753305_8838392367134492934_n.jpg',
+    'Media Coverage/80955812_125172342288866_1851474089642819584_n.jpg',
+    'Media Coverage/81435773_126144912191609_4860656347634466816_n.jpg',
+    'Media Coverage/89630793_148154609990639_4308468306651643904_n.jpg',
+    'Media Coverage/89773726_148154543323979_1189297343573262336_n.jpg',
+    'Media Coverage/89796478_148154586657308_9135402619777318912_n.jpg',
+    'Media Coverage/90146551_149627046510062_8785574084659380224_n.jpg',
+    'Media Coverage/Screenshot 2025-12-24 015649.png',
+    'Media Coverage/Screenshot 2025-12-24 015736.png',
+    '1st 40 pictures/IMG_20170522_103102.jpg',
+    '1st 40 pictures/IMG_20170522_103122.jpg',
+    '1st 40 pictures/IMG_20170522_103910.jpg',
+    '1st 40 pictures/IMG_20170522_110011.jpg',
+    '1st 40 pictures/IMG_20170524_110103.jpg',
+    '1st 40 pictures/IMG_20170530_092312.jpg',
+    '1st 40 pictures/IMG_20170530_092647.jpg',
+    '1st 40 pictures/IMG_20170530_092651.jpg',
+    '1st 40 pictures/IMG_20170808_103723.jpg',
+    '1st 40 pictures/IMG_20170908_105856_01.jpg',
+    '1st 40 pictures/IMG_20170915_095955.jpg',
+    '1st 40 pictures/IMG_20170923_131801.jpg',
+    '1st 40 pictures/IMG_20170923_131853.jpg',
+    '1st 40 pictures/IMG_20170924_105153.jpg',
+    '1st 40 pictures/IMG_20170924_105202.jpg',
+    '1st 40 pictures/IMG_20171008_105012.jpg',
+    '1st 40 pictures/IMG_20171008_123534.jpg',
+    '1st 40 pictures/IMG_20171108_110624.jpg',
+    '1st 40 pictures/IMG_20171108_114720.jpg',
+    '1st 40 pictures/IMG_20171108_123301.jpg',
+    '1st 40 pictures/IMG_20171109_104745.jpg',
+    '1st 40 pictures/IMG_20171109_114411.jpg',
+    '1st 40 pictures/IMG_20171114_104205.jpg',
+    '1st 40 pictures/IMG_20171114_104448.jpg',
+    '1st 40 pictures/IMG_20171116_105905.jpg',
+    '1st 40 pictures/IMG_20171217_155839.jpg',
+    '1st 40 pictures/IMG_20171217_155854_001.jpg',
+    '1st 40 pictures/IMG_20171217_155854_004.jpg',
+    '1st 40 pictures/IMG_20171217_164403.jpg',
+    '1st 40 pictures/IMG_20171217_165316.jpg',
+    '1st 40 pictures/IMG_20180309_131726.jpg',
+    '1st 40 pictures/IMG_20180516_071201.jpg',
+    '1st 40 pictures/IMG_20180516_123812.jpg',
+    '1st 40 pictures/IMG_20180518_105815.jpg',
+    '1st 40 pictures/IMG_20180518_122112.jpg',
+    '1st 40 pictures/IMG_20180523_132948.jpg',
+    '1st 40 pictures/IMG_20180523_133049.jpg',
+    '1st 40 pictures/IMG_20180829_104945.jpg'
+];
+
+function openLightbox(index) {
+    currentImageIndex = index;
+    const lightboxOverlay = document.getElementById('lightboxOverlay');
+    const lightboxImage = document.getElementById('lightboxImage');
+    const lightboxCounter = document.getElementById('lightboxCounter');
+    
+    if (!lightboxOverlay || !lightboxImage) return;
+    
+    // Set the image source
+    lightboxImage.src = mediaImages[currentImageIndex];
+    lightboxImage.alt = `Media coverage article ${currentImageIndex + 1}`;
+    
+    // Update counter
+    if (lightboxCounter) {
+        lightboxCounter.textContent = `${currentImageIndex + 1} / ${mediaImages.length}`;
+    }
+    
+    // Show lightbox
+    lightboxOverlay.classList.add('active');
+    lightboxOverlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    
+    // Focus on close button for accessibility
+    const closeBtn = document.getElementById('lightboxClose');
+    if (closeBtn) {
+        setTimeout(() => closeBtn.focus(), 100);
+    }
+}
+
+function closeLightbox() {
+    const lightboxOverlay = document.getElementById('lightboxOverlay');
+    if (!lightboxOverlay) return;
+    
+    lightboxOverlay.classList.remove('active');
+    lightboxOverlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = 'auto';
+}
+
+function showNextImage() {
+    currentImageIndex = (currentImageIndex + 1) % mediaImages.length;
+    updateLightboxImage();
+}
+
+function showPrevImage() {
+    currentImageIndex = (currentImageIndex - 1 + mediaImages.length) % mediaImages.length;
+    updateLightboxImage();
+}
+
+function updateLightboxImage() {
+    const lightboxImage = document.getElementById('lightboxImage');
+    const lightboxCounter = document.getElementById('lightboxCounter');
+    
+    if (lightboxImage) {
+        lightboxImage.src = mediaImages[currentImageIndex];
+        lightboxImage.alt = `Media coverage article ${currentImageIndex + 1}`;
+    }
+    
+    if (lightboxCounter) {
+        lightboxCounter.textContent = `${currentImageIndex + 1} / ${mediaImages.length}`;
+    }
+}
+
+// Initialize lightbox event listeners
+document.addEventListener('DOMContentLoaded', () => {
+    const lightboxOverlay = document.getElementById('lightboxOverlay');
+    const lightboxClose = document.getElementById('lightboxClose');
+    const lightboxNext = document.getElementById('lightboxNext');
+    const lightboxPrev = document.getElementById('lightboxPrev');
+    
+    // Close button
+    if (lightboxClose) {
+        lightboxClose.addEventListener('click', closeLightbox);
+    }
+    
+    // Next button
+    if (lightboxNext) {
+        lightboxNext.addEventListener('click', (e) => {
+            e.stopPropagation();
+            showNextImage();
+        });
+    }
+    
+    // Previous button
+    if (lightboxPrev) {
+        lightboxPrev.addEventListener('click', (e) => {
+            e.stopPropagation();
+            showPrevImage();
+        });
+    }
+    
+    // Close on overlay click (but not on image or buttons)
+    if (lightboxOverlay) {
+        lightboxOverlay.addEventListener('click', (e) => {
+            if (e.target === lightboxOverlay) {
+                closeLightbox();
+            }
+        });
+    }
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (lightboxOverlay && lightboxOverlay.classList.contains('active')) {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            } else if (e.key === 'ArrowRight') {
+                showNextImage();
+            } else if (e.key === 'ArrowLeft') {
+                showPrevImage();
+            }
+        }
+    });
+    
+    // Prevent body scroll when lightbox is open
+    const observer = new MutationObserver(() => {
+        if (lightboxOverlay && lightboxOverlay.classList.contains('active')) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+    });
+    
+    if (lightboxOverlay) {
+        observer.observe(lightboxOverlay, {
+            attributes: true,
+            attributeFilter: ['class']
+        });
+    }
+});
+
+// Instagram Carousel Functionality
+let currentInstagramIndex = 0;
+let instagramAutoPlayInterval = null;
+const instagramAutoPlayDelay = 5000; // 5 seconds
+
+function initInstagramCarousel() {
+    const carousel = document.getElementById('instagramCarousel');
+    const track = document.getElementById('instagramTrack');
+    const prevBtn = document.getElementById('instagramPrev');
+    const nextBtn = document.getElementById('instagramNext');
+    const posts = track ? track.querySelectorAll('.instagram-post') : [];
+    
+    if (!carousel || !track || posts.length === 0) return;
+    
+    const totalPosts = posts.length;
+    
+    // Function to update carousel position
+    function updateCarouselPosition() {
+        const translateX = -currentInstagramIndex * 100;
+        track.style.transform = `translateX(${translateX}%)`;
+    }
+    
+    // Function to go to next post
+    function nextInstagramPost() {
+        currentInstagramIndex = (currentInstagramIndex + 1) % totalPosts;
+        updateCarouselPosition();
+    }
+    
+    // Function to go to previous post
+    function prevInstagramPost() {
+        currentInstagramIndex = (currentInstagramIndex - 1 + totalPosts) % totalPosts;
+        updateCarouselPosition();
+    }
+    
+    // Auto-play functionality
+    function startAutoPlay() {
+        stopAutoPlay(); // Clear any existing interval
+        instagramAutoPlayInterval = setInterval(() => {
+            nextInstagramPost();
+        }, instagramAutoPlayDelay);
+    }
+    
+    function stopAutoPlay() {
+        if (instagramAutoPlayInterval) {
+            clearInterval(instagramAutoPlayInterval);
+            instagramAutoPlayInterval = null;
+        }
+    }
+    
+    // Event listeners will be set up later with embed support
+    
+    // Pause auto-play when user interacts with carousel
+    if (track) {
+        track.addEventListener('touchstart', stopAutoPlay);
+        track.addEventListener('touchend', () => {
+            setTimeout(startAutoPlay, 2000); // Resume after 2 seconds
+        });
+    }
+    
+    // Keyboard navigation (will be set up after wrapper functions)
+    
+    // Wrapper to re-initialize Instagram embeds
+    const nextWithEmbed = () => {
+        nextInstagramPost();
+        if (typeof instgrm !== 'undefined') {
+            setTimeout(() => instgrm.Embeds.process(), 100);
+        }
+    };
+    
+    const prevWithEmbed = () => {
+        prevInstagramPost();
+        if (typeof instgrm !== 'undefined') {
+            setTimeout(() => instgrm.Embeds.process(), 100);
+        }
+    };
+    
+    // Update auto-play to use wrapper
+    const startAutoPlayWithEmbed = () => {
+        stopAutoPlay();
+        instagramAutoPlayInterval = setInterval(() => {
+            nextWithEmbed();
+        }, instagramAutoPlayDelay);
+    };
+    
+    // Update button listeners
+    if (nextBtn) {
+        nextBtn.onclick = (e) => {
+            e.stopPropagation();
+            nextWithEmbed();
+            stopAutoPlay();
+            startAutoPlayWithEmbed();
+        };
+    }
+    
+    if (prevBtn) {
+        prevBtn.onclick = (e) => {
+            e.stopPropagation();
+            prevWithEmbed();
+            stopAutoPlay();
+            startAutoPlayWithEmbed();
+        };
+    }
+    
+    // Update hover events
+    if (carousel) {
+        carousel.addEventListener('mouseenter', stopAutoPlay);
+        carousel.addEventListener('mouseleave', startAutoPlayWithEmbed);
+    }
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft' && document.activeElement !== prevBtn) {
+            prevWithEmbed();
+            stopAutoPlay();
+            startAutoPlayWithEmbed();
+        } else if (e.key === 'ArrowRight' && document.activeElement !== nextBtn) {
+            nextWithEmbed();
+            stopAutoPlay();
+            startAutoPlayWithEmbed();
+        }
+    });
+    
+    // Initialize
+    updateCarouselPosition();
+    startAutoPlayWithEmbed();
+}
+
+// Initialize Instagram carousel when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    initInstagramCarousel();
+});
