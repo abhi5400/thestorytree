@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New lead – The Story Tree</title>
+  <!-- In EmailJS template Settings, set Subject to: {{subject_line}} -->
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.5; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+  <h2 style="color: #2E7D32; margin-top: 0;">New {{form_type}} from The Story Tree</h2>
+  <p>You have received a new submission from The Story Tree website.</p>
+
+  <h3 style="color: #2E7D32; font-size: 1rem; margin: 20px 0 10px;">Contact</h3>
+  <table style="width: 100%; border-collapse: collapse;">
+    <tr><td style="padding: 8px 12px; border: 1px solid #e0e0e0; background: #f5f5f5; font-weight: bold; width: 140px;">Name</td><td style="padding: 8px 12px; border: 1px solid #e0e0e0;">{{name}}</td></tr>
+    <tr><td style="padding: 8px 12px; border: 1px solid #e0e0e0; background: #f5f5f5; font-weight: bold;">Email</td><td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><a href="mailto:{{email}}">{{email}}</a></td></tr>
+    <tr><td style="padding: 8px 12px; border: 1px solid #e0e0e0; background: #f5f5f5; font-weight: bold;">Phone</td><td style="padding: 8px 12px; border: 1px solid #e0e0e0;">{{phone}}</td></tr>
+    <tr><td style="padding: 8px 12px; border: 1px solid #e0e0e0; background: #f5f5f5; font-weight: bold;">Organization</td><td style="padding: 8px 12px; border: 1px solid #e0e0e0;">{{organization}}</td></tr>
+  </table>
+
+  <h3 style="color: #2E7D32; font-size: 1rem; margin: 20px 0 10px;">Enquiry / Contact details</h3>
+  <table style="width: 100%; border-collapse: collapse;">
+    <tr><td style="padding: 8px 12px; border: 1px solid #e0e0e0; background: #f5f5f5; font-weight: bold; width: 160px;">Service interested in</td><td style="padding: 8px 12px; border: 1px solid #e0e0e0;">{{service_label}}</td></tr>
+    <tr><td style="padding: 8px 12px; border: 1px solid #e0e0e0; background: #f5f5f5; font-weight: bold; vertical-align: top;">Message</td><td style="padding: 8px 12px; border: 1px solid #e0e0e0; white-space: pre-wrap;">{{message}}</td></tr>
+  </table>
+
+  <h3 style="color: #2E7D32; font-size: 1rem; margin: 20px 0 10px;">Booking / Session details</h3>
+  <table style="width: 100%; border-collapse: collapse;">
+    <tr><td style="padding: 8px 12px; border: 1px solid #e0e0e0; background: #f5f5f5; font-weight: bold; width: 180px;">Session type</td><td style="padding: 8px 12px; border: 1px solid #e0e0e0;">{{session_type_label}}</td></tr>
+    <tr><td style="padding: 8px 12px; border: 1px solid #e0e0e0; background: #f5f5f5; font-weight: bold;">Participants</td><td style="padding: 8px 12px; border: 1px solid #e0e0e0;">{{participant_count}}</td></tr>
+    <tr><td style="padding: 8px 12px; border: 1px solid #e0e0e0; background: #f5f5f5; font-weight: bold;">Preferred date</td><td style="padding: 8px 12px; border: 1px solid #e0e0e0;">{{preferred_date}}</td></tr>
+    <tr><td style="padding: 8px 12px; border: 1px solid #e0e0e0; background: #f5f5f5; font-weight: bold;">Preferred time</td><td style="padding: 8px 12px; border: 1px solid #e0e0e0;">{{preferred_time_label}}</td></tr>
+    <tr><td style="padding: 8px 12px; border: 1px solid #e0e0e0; background: #f5f5f5; font-weight: bold;">Duration</td><td style="padding: 8px 12px; border: 1px solid #e0e0e0;">{{session_duration_label}}</td></tr>
+    <tr><td style="padding: 8px 12px; border: 1px solid #e0e0e0; background: #f5f5f5; font-weight: bold; vertical-align: top;">Special requirements</td><td style="padding: 8px 12px; border: 1px solid #e0e0e0; white-space: pre-wrap;">{{special_requirements}}</td></tr>
+  </table>
+
+  <p style="margin-top: 24px; font-size: 12px; color: #666;">— The Story Tree website</p>
+</body>
+</html>

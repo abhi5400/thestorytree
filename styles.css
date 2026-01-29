@@ -11,6 +11,40 @@ img {
     height: auto;
 }
 
+/* Accessibility: visible focus for keyboard users */
+:focus-visible {
+    outline: 2px solid #4CAF50;
+    outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible {
+    outline: 2px solid #4CAF50;
+    outline-offset: 2px;
+}
+
+/* Minimum tap target size (44px) for mobile - buttons and interactive controls */
+.cta-button,
+.read-more-btn,
+.program-button,
+button.modal-close,
+.lightbox-close,
+.lightbox-nav {
+    min-height: 44px;
+    min-width: 44px;
+}
+
+.nav-link {
+    min-height: 44px;
+    padding: 0.5rem 0.75rem;
+    display: inline-flex;
+    align-items: center;
+}
+
 /* Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {
     *,
@@ -1780,6 +1814,59 @@ body {
     margin: 0;
 }
 
+/* FAQ Section */
+.faq-section {
+    padding: 6rem 0;
+    background: linear-gradient(135deg, #E8F5E9 0%, #F1F8E9 100%);
+}
+
+.faq-list {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    background: white;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.faq-question {
+    padding: 1.25rem 1.5rem;
+    font-weight: 600;
+    color: #2E7D32;
+    cursor: pointer;
+    list-style: none;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.faq-question::-webkit-details-marker { display: none; }
+
+.faq-question::after {
+    content: '\f078';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    font-size: 0.9rem;
+    transition: transform 0.3s ease;
+}
+
+.faq-item[open] .faq-question::after {
+    transform: rotate(180deg);
+}
+
+.faq-answer {
+    padding: 0 1.5rem 1.25rem;
+    margin: 0;
+    color: #555;
+    line-height: 1.7;
+    font-size: 1rem;
+}
+
 /* Contact Section */
 .contact {
     padding: 6rem 0;
@@ -1877,6 +1964,20 @@ body {
 .contact-details p {
     color: #666;
     font-size: 1rem;
+}
+
+.contact-link,
+.contact-details a {
+    color: #2E7D32;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.contact-link:hover,
+.contact-details a:hover {
+    color: #1B5E20;
+    text-decoration: underline;
 }
 
 .contact-form-container {
@@ -2204,6 +2305,17 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
+}
+
+.footer-link {
+    color: rgba(255, 255, 255, 0.95);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+    color: white;
+    text-decoration: underline;
 }
 
 .footer-bottom {
@@ -2735,6 +2847,18 @@ body {
 .modal-overlay.active .modal-container {
     transform: scale(1) translateY(0);
 }
+
+.modal-container--scroll .modal-body {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.privacy-body h4 { margin-top: 1.25rem; margin-bottom: 0.5rem; font-size: 1.1rem; color: #2E7D32; }
+.privacy-body p { margin-bottom: 0.75rem; font-size: 0.95rem; line-height: 1.6; }
+.form-privacy-link, .form-privacy-note a { color: #4CAF50; text-decoration: underline; }
+.form-privacy-link:hover { color: #2E7D32; }
+.form-privacy-note { font-size: 0.9rem; color: #666; margin-bottom: 1rem; }
+.footer-legal { margin-top: 0.5rem; font-size: 0.9rem; }
 
 .modal-header {
     display: flex;

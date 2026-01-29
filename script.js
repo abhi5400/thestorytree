@@ -1,3 +1,38 @@
+/**
+ * EmailJS config – one template for both Contact and Booking forms.
+ * Replace with your IDs from https://dashboard.emailjs.com/
+ * Use emailjs-unified-template.html for the template content.
+ */
+const EMAILJS_CONFIG = {
+    serviceId: 'service_3bihqqb',
+    templateId: 'template_ot7vgoy',
+    publicKey: '-veGxRxhZnZ2ZlRwb'
+};
+
+// Initialize EmailJS (required in v4 before send)
+if (typeof emailjs !== 'undefined' && EMAILJS_CONFIG.publicKey) {
+    emailjs.init({ publicKey: EMAILJS_CONFIG.publicKey });
+}
+
+// Shared validation (used by Contact and Booking forms)
+const VALIDATION = {
+    emailRegex: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
+    phoneRegex: /^[\+]?[0-9]\d{6,19}$/,
+    nameMinLength: 2,
+    messageMinLength: 10,
+    participantCountMin: 1,
+    participantCountMax: 500
+};
+function isValidEmail(value) {
+    return !value || VALIDATION.emailRegex.test(value);
+}
+function isValidPhone(countryCode, value) {
+    if (!value) return true;
+    const full = (countryCode || '+91') + value;
+    const cleaned = full.replace(/[\s\-\(\)]/g, '');
+    return VALIDATION.phoneRegex.test(cleaned);
+}
+
 // Form Integration Functions
 function openBookingModal(serviceType = 'general') {
     const modal = document.getElementById('bookingModal');
@@ -42,9 +77,9 @@ function openBookingModal(serviceType = 'general') {
     modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
     
-    // Focus on first input
+    // Focus on first visible input (skip honeypot to avoid aria-hidden + focus violation)
     setTimeout(() => {
-        const firstInput = modal.querySelector('input, select, textarea');
+        const firstInput = modal.querySelector('.form-group:not(.honeypot) input, .form-group:not(.honeypot) select, .form-group:not(.honeypot) textarea');
         if (firstInput) firstInput.focus();
     }, 100);
 }
@@ -179,6 +214,44 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 block: 'start'
             });
         }
+    });
+});
+
+// Privacy Policy Modal
+function openPrivacyModal(e) {
+    if (e) e.preventDefault();
+    const modal = document.getElementById('privacyModal');
+    if (modal) {
+        modal.classList.add('active');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        const closeBtn = modal.querySelector('#closePrivacyModal');
+        if (closeBtn) setTimeout(() => closeBtn.focus(), 100);
+    }
+}
+
+function closePrivacyModal() {
+    const modal = document.getElementById('privacyModal');
+    if (modal) {
+        modal.classList.remove('active');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    ['privacyLink', 'privacyLinkContact', 'privacyLinkBooking'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('click', openPrivacyModal);
+    });
+    const closeBtn = document.getElementById('closePrivacyModal');
+    if (closeBtn) closeBtn.addEventListener('click', closePrivacyModal);
+    const privacyOverlay = document.getElementById('privacyModal');
+    if (privacyOverlay) {
+        privacyOverlay.addEventListener('click', (e) => { if (e.target === privacyOverlay) closePrivacyModal(); });
+    }
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && privacyOverlay && privacyOverlay.classList.contains('active')) closePrivacyModal();
     });
 });
 
@@ -391,12 +464,16 @@ document.querySelectorAll('.program-button').forEach(button => {
     });
 });
 
-// CTA button interactions
+// CTA button interactions (skip form submit buttons so Contact/Booking forms actually submit)
 document.querySelectorAll('.cta-button').forEach(button => {
     button.addEventListener('click', function(e) {
+        // Let form submit buttons submit their form — don't intercept
+        if (button.type === 'submit' && button.closest('form')) {
+            return;
+        }
         e.preventDefault();
         
-        // Add a temporary success message
+        // Add a temporary success message for non-form CTA buttons
         const originalText = this.innerHTML;
         this.innerHTML = '<i class="fas fa-check"></i> Thank you!';
         this.style.background = 'linear-gradient(135deg, #4CAF50, #66BB6A)';
@@ -627,35 +704,31 @@ function validateField(field) {
         return false;
     }
     
+    // Name min length (Contact form)
+    if (fieldName === 'name' && value && value.length < VALIDATION.nameMinLength) {
+        showFieldError(formGroup, 'Name must be at least ' + VALIDATION.nameMinLength + ' characters');
+        return false;
+    }
+    
     // Email validation
-    if (fieldName === 'email' && value) {
-        // More comprehensive email regex that handles edge cases
-        const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-        if (!emailRegex.test(value)) {
-            showFieldError(formGroup, 'Please enter a valid email address');
-            return false;
-        }
+    if (fieldName === 'email' && value && !isValidEmail(value)) {
+        showFieldError(formGroup, 'Please enter a valid email address');
+        return false;
     }
     
     // Phone validation (if provided)
     if (fieldName === 'phone' && value) {
-        // Get country code and combine with phone number
         const countryCodeSelect = formGroup.querySelector('#phoneCountryCode');
         const countryCode = countryCodeSelect ? countryCodeSelect.value : '+91';
-        const fullPhoneNumber = countryCode + value;
-        
-        // More flexible phone regex that allows numbers starting with 0
-        const cleanedPhone = fullPhoneNumber.replace(/[\s\-\(\)]/g, ''); // Remove spaces, dashes, parentheses
-        const phoneRegex = /^[\+]?[0-9]\d{6,19}$/; // Must start with 0-9, then 6-19 more digits
-        if (!phoneRegex.test(cleanedPhone)) {
+        if (!isValidPhone(countryCode, value)) {
             showFieldError(formGroup, 'Please enter a valid phone number (7-20 digits)');
             return false;
         }
     }
     
     // Message length validation
-    if (fieldName === 'message' && value && value.length < 10) {
-        showFieldError(formGroup, 'Message must be at least 10 characters long');
+    if (fieldName === 'message' && value && value.length < VALIDATION.messageMinLength) {
+        showFieldError(formGroup, 'Message must be at least ' + VALIDATION.messageMinLength + ' characters');
         return false;
     }
     
@@ -678,6 +751,8 @@ function showFieldError(formGroup, message) {
 function clearError(field) {
     const formGroup = field.closest('.form-group');
     formGroup.classList.remove('error');
+    const errEl = formGroup.querySelector('.error-message');
+    if (errEl) errEl.textContent = '';
 }
 
 function clearAllContactErrors() {
@@ -727,41 +802,92 @@ function handleFormSubmission(e) {
     const submitButton = form.querySelector('button[type="submit"]');
     const originalButtonText = submitButton.innerHTML;
     
-    // Validate all fields
-    let isValid = true;
-    const inputs = form.querySelectorAll('input, select, textarea');
+    // Honeypot anti-spam: if filled, treat as bot
+    const honeypot = form.querySelector('input[name="_gotcha"]');
+    if (honeypot && honeypot.value) {
+        submitButton.innerHTML = originalButtonText;
+        submitButton.disabled = false;
+        return;
+    }
     
-    inputs.forEach(input => {
-        if (!validateField(input)) {
-            isValid = false;
-        }
+    // Validate all fields (skip honeypot)
+    let isValid = true;
+    form.querySelectorAll('input, select, textarea').forEach(input => {
+        if (input.closest('.honeypot')) return;
+        if (!validateField(input)) isValid = false;
     });
     
     if (!isValid) {
+        console.log('[Contact] Validation failed — fix the errors shown on the form.');
         showNotification('Please fix the errors above', 'error');
         return;
     }
     
-    // Show loading state
     submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
     submitButton.disabled = true;
     
-    // Simulate form submission (replace with actual API call)
-    setTimeout(() => {
-        // Reset form
-        form.reset();
-        
-        // Reset button
+    if (EMAILJS_CONFIG.templateId === 'YOUR_TEMPLATE_ID' || !EMAILJS_CONFIG.publicKey) {
+        showNotification('Please set up EmailJS: add your Service ID, Template ID, and Public Key in script.js.', 'error');
         submitButton.innerHTML = originalButtonText;
         submitButton.disabled = false;
-        
-        // Clear all success and error states
-        clearAllContactErrors();
-        
-        // Show thank you screen
-        showThankYouScreen();
-        
-    }, 2000);
+        return;
+    }
+    
+    const fullPhone = (phoneInput && countryCodeSelect && phoneInput.value)
+        ? (countryCodeSelect.value + phoneInput.value).trim()
+        : 'Not provided';
+    const serviceSelect = form.querySelector('#service');
+    const serviceLabel = serviceSelect && serviceSelect.options[serviceSelect.selectedIndex]
+        ? serviceSelect.options[serviceSelect.selectedIndex].text
+        : formData.get('service') || '—';
+    
+    const templateParams = {
+        form_type: 'Contact',
+        subject_line: 'New Contact from The Story Tree: ' + (formData.get('name') || 'Unknown'),
+        name: formData.get('name') || '',
+        email: formData.get('email') || '',
+        phone: fullPhone,
+        organization: (formData.get('organization') || '').trim() || '—',
+        service_label: serviceLabel,
+        message: (formData.get('message') || '').trim() || '—',
+        session_type_label: '—',
+        participant_count: '—',
+        preferred_date: '—',
+        preferred_time_label: '—',
+        session_duration_label: '—',
+        special_requirements: '—'
+    };
+    
+    console.log('[Contact] Sending request to EmailJS...', { form_type: 'Contact', email: templateParams.email });
+    
+    if (typeof emailjs === 'undefined') {
+        showNotification('Email service not loaded. Please refresh the page.', 'error');
+        submitButton.innerHTML = originalButtonText;
+        submitButton.disabled = false;
+        return;
+    }
+    
+    emailjs.send(
+        EMAILJS_CONFIG.serviceId,
+        EMAILJS_CONFIG.templateId,
+        templateParams,
+        { publicKey: EMAILJS_CONFIG.publicKey }
+    )
+        .then(() => {
+            console.log('[Contact] Email sent successfully.');
+            form.reset();
+            clearAllContactErrors();
+            showThankYouScreen();
+        })
+        .catch((err) => {
+            console.error('EmailJS Contact error:', err);
+            const errMsg = err.text || err.statusText || (err.status ? 'Status ' + err.status : '') || 'Please try again or email us directly.';
+            showNotification('Could not send: ' + errMsg, 'error');
+        })
+        .finally(() => {
+            submitButton.innerHTML = originalButtonText;
+            submitButton.disabled = false;
+        });
 }
 
 function showNotification(message, type = 'info') {
@@ -960,38 +1086,33 @@ function validateBookingField(field) {
         return false;
     }
     
+    // Name min length (Booking form)
+    if (fieldName === 'bookingName' && value && value.length < VALIDATION.nameMinLength) {
+        showBookingFieldError(formGroup, 'Name must be at least ' + VALIDATION.nameMinLength + ' characters');
+        return false;
+    }
+    
     // Email validation
-    if (fieldName === 'bookingEmail' && value) {
-        // More comprehensive email regex that handles edge cases
-        const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-        if (!emailRegex.test(value)) {
-            showBookingFieldError(formGroup, 'Please enter a valid email address');
-            return false;
-        }
+    if (fieldName === 'bookingEmail' && value && !isValidEmail(value)) {
+        showBookingFieldError(formGroup, 'Please enter a valid email address');
+        return false;
     }
     
     // Phone validation
     if (fieldName === 'bookingPhone' && value) {
-        // Get country code and combine with phone number
         const countryCodeSelect = formGroup.querySelector('#bookingPhoneCountryCode');
         const countryCode = countryCodeSelect ? countryCodeSelect.value : '+91';
-        const fullPhoneNumber = countryCode + value;
-        
-        // More flexible phone regex that allows numbers starting with 0
-        const cleanedPhone = fullPhoneNumber.replace(/[\s\-\(\)]/g, ''); // Remove spaces, dashes, parentheses
-        const phoneRegex = /^[\+]?[0-9]\d{6,19}$/; // Must start with 0-9, then 6-19 more digits
-        if (!phoneRegex.test(cleanedPhone)) {
+        if (!isValidPhone(countryCode, value)) {
             showBookingFieldError(formGroup, 'Please enter a valid phone number (7-20 digits)');
             return false;
         }
     }
     
-    // Date validation
+    // Date validation (future date only)
     if (fieldName === 'preferredDate' && value) {
         const selectedDate = new Date(value);
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-        
         if (selectedDate < today) {
             showBookingFieldError(formGroup, 'Please select a future date');
             return false;
@@ -1001,17 +1122,13 @@ function validateBookingField(field) {
     // Number validation for participant count
     if (fieldName === 'participantCount' && value) {
         const count = parseInt(value);
-        if (isNaN(count) || count < 1 || count > 500) {
-            showBookingFieldError(formGroup, 'Please enter a valid number between 1 and 500');
+        if (isNaN(count) || count < VALIDATION.participantCountMin || count > VALIDATION.participantCountMax) {
+            showBookingFieldError(formGroup, 'Please enter a number between ' + VALIDATION.participantCountMin + ' and ' + VALIDATION.participantCountMax);
             return false;
         }
     }
     
-    // Special requirements length validation
-    if (fieldName === 'specialRequirements' && value && value.length < 10) {
-        showBookingFieldError(formGroup, 'Please provide more details (at least 10 characters)');
-        return false;
-    }
+    // Special requirements: optional; any length is fine
     
     // Show success state for valid fields
     if (value) {
@@ -1032,6 +1149,8 @@ function showBookingFieldError(formGroup, message) {
 function clearBookingError(field) {
     const formGroup = field.closest('.form-group');
     formGroup.classList.remove('error');
+    const errEl = formGroup.querySelector('.error-message');
+    if (errEl) errEl.textContent = '';
 }
 
 function clearAllBookingErrors() {
@@ -1085,35 +1204,100 @@ function handleBookingSubmission(e) {
     const submitButton = form.querySelector('button[type="submit"]');
     const originalButtonText = submitButton.innerHTML;
     
-    // Validate all fields
-    let isValid = true;
-    const inputs = form.querySelectorAll('input, select, textarea');
+    const honeypot = form.querySelector('input[name="_gotcha"]');
+    if (honeypot && honeypot.value) {
+        submitButton.innerHTML = originalButtonText;
+        submitButton.disabled = false;
+        return;
+    }
     
-    inputs.forEach(input => {
-        if (!validateBookingField(input)) {
-            isValid = false;
-        }
+    // Validate all fields (skip honeypot)
+    let isValid = true;
+    form.querySelectorAll('input, select, textarea').forEach(input => {
+        if (input.closest('.honeypot')) return;
+        if (!validateBookingField(input)) isValid = false;
     });
     
     if (!isValid) {
+        console.log('[Booking] Validation failed — fix the errors shown on the form.');
         showNotification('Please fix the errors above', 'error');
         return;
     }
     
-    // Show loading state
+    if (EMAILJS_CONFIG.templateId === 'YOUR_TEMPLATE_ID' || !EMAILJS_CONFIG.publicKey) {
+        showNotification('Please set up EmailJS: add your Service ID, Template ID, and Public Key in script.js.', 'error');
+        submitButton.innerHTML = originalButtonText;
+        submitButton.disabled = false;
+        return;
+    }
+    
     submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Booking...';
     submitButton.disabled = true;
     
-    // Simulate booking submission (replace with actual API call)
-    setTimeout(() => {
-        // Show thank you screen
-        showThankYouScreen();
-        
-        // Reset button
+    const fullPhone = (phoneInput && countryCodeSelect && phoneInput.value)
+        ? (countryCodeSelect.value + phoneInput.value).trim()
+        : 'Not provided';
+    const sessionTypeSelect = form.querySelector('#sessionType');
+    const sessionTypeLabel = sessionTypeSelect && sessionTypeSelect.options[sessionTypeSelect.selectedIndex]
+        ? sessionTypeSelect.options[sessionTypeSelect.selectedIndex].text
+        : formData.get('sessionType') || '';
+    const preferredTimeSelect = form.querySelector('#preferredTime');
+    const preferredTimeLabel = preferredTimeSelect && preferredTimeSelect.options[preferredTimeSelect.selectedIndex]
+        ? preferredTimeSelect.options[preferredTimeSelect.selectedIndex].text
+        : 'Not specified';
+    const sessionDurationSelect = form.querySelector('#sessionDuration');
+    const sessionDurationLabel = sessionDurationSelect && sessionDurationSelect.options[sessionDurationSelect.selectedIndex]
+        ? sessionDurationSelect.options[sessionDurationSelect.selectedIndex].text
+        : 'Not specified';
+    
+    const templateParams = {
+        form_type: 'Booking',
+        subject_line: 'New Booking from The Story Tree: ' + (formData.get('bookingName') || 'Unknown'),
+        name: formData.get('bookingName') || '',
+        email: formData.get('bookingEmail') || '',
+        phone: fullPhone,
+        organization: formData.get('bookingOrganization') || '',
+        service_label: '—',
+        message: '—',
+        session_type_label: sessionTypeLabel,
+        participant_count: formData.get('participantCount') || 'Not specified',
+        preferred_date: formData.get('preferredDate') || 'Not specified',
+        preferred_time_label: preferredTimeLabel,
+        session_duration_label: sessionDurationLabel,
+        special_requirements: (formData.get('specialRequirements') || '').trim() || 'None'
+    };
+    
+    console.log('[Booking] Sending request to EmailJS...', { form_type: 'Booking', email: templateParams.email });
+    
+    if (typeof emailjs === 'undefined') {
+        showNotification('Email service not loaded. Please refresh the page.', 'error');
         submitButton.innerHTML = originalButtonText;
         submitButton.disabled = false;
-        
-    }, 2000);
+        return;
+    }
+    
+    emailjs.send(
+        EMAILJS_CONFIG.serviceId,
+        EMAILJS_CONFIG.templateId,
+        templateParams,
+        { publicKey: EMAILJS_CONFIG.publicKey }
+    )
+        .then(() => {
+            console.log('[Booking] Email sent successfully.');
+            form.reset();
+            clearAllBookingErrors();
+            closeBookingModal();
+            showThankYouScreen();
+        })
+        .catch((err) => {
+            console.error('EmailJS Booking error:', err);
+            const errMsg = err.text || err.statusText || (err.status ? 'Status ' + err.status : '') || 'Please try again or email us directly.';
+            showNotification('Could not send: ' + errMsg, 'error');
+        })
+        .finally(() => {
+            submitButton.innerHTML = originalButtonText;
+            submitButton.disabled = false;
+        });
 }
 
 // Image Lightbox Functionality
@@ -1269,7 +1453,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Keyboard navigation
+    // Keyboard navigation and focus trap
     document.addEventListener('keydown', (e) => {
         if (lightboxOverlay && lightboxOverlay.classList.contains('active')) {
             if (e.key === 'Escape') {
@@ -1278,6 +1462,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 showNextImage();
             } else if (e.key === 'ArrowLeft') {
                 showPrevImage();
+            } else if (e.key === 'Tab') {
+                const focusable = lightboxOverlay.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])');
+                const first = focusable[0];
+                const last = focusable[focusable.length - 1];
+                if (e.shiftKey && document.activeElement === first) {
+                    e.preventDefault();
+                    last.focus();
+                } else if (!e.shiftKey && document.activeElement === last) {
+                    e.preventDefault();
+                    first.focus();
+                }
             }
         }
     });
